@@ -1,5 +1,5 @@
 # .github
-Data 3101 Mount Allison University
+Data 3101 Mount Allison University  
 Data Acquisition and Organization
 
 Prereq: MATH 1311; or permission of the Program Advisor.
