@@ -1,4 +1,4 @@
-# .github
+# DATA 3101
 Data 3101 Mount Allison University  
 Data Acquisition and Organization
 
