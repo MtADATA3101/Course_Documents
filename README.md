@@ -1,5 +1,11 @@
 # DATA 3101
-![Optional Text](../main/Graphics/MountAllisonUniversity_StackedWordmark-FullColour.png)  
+![Optional Text](../main/Graphics/MountAllisonUniversity_StackedWordmark-FullColour.png)
+<img
+  src="../main/Graphics/MountAllisonUniversity_StackedWordmark-FullColour.png"
+  alt="Alt text"
+  title="Optional title"
+  style="display: inline-block; margin: 0 auto; max-width: 100px">
+  
 Data 3101 Mount Allison University  
 Data Acquisition and Organization
 
