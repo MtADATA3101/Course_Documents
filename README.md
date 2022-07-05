@@ -3,7 +3,7 @@
   src="../main/Graphics/MountAllisonUniversity_StackedWordmark-FullColour.png"
   alt="Alt text"
   title="Optional title"
-  style="display: inline-block; margin: 0 auto; max-width: 50px">
+  style="display: inline-block; margin: 0 auto; max-width: 50%">
   
 Data 3101 Mount Allison University  
 Data Acquisition and Organization
