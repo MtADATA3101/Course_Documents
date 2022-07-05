@@ -1,0 +1,39 @@
+
+
+Learning Objectives:
+-learn principles and goals of reproducible open data
+-use Git for reproducible version control
+
+
+Science 3991: Operational Data Science
+Here are our weekly topics:
+May 6-13
+Overview of Research Data Management
+Setup and Data Visualization (Chapters 1-3)
+
+May 13-17
+Types, Formats, and Stages of Data
+Data Types, Workflow, and Data Transformation (Chapters 4-8)
+
+May 20-24
+Making Data Meaningful to Others
+Data Wrangling (Chapters 11, 12, 14-16)
+
+May 27-31
+Data Storage, Backup, and Security
+Programming and Iteration of Data Flows (Chapters 17-19)
+
+June 3-7
+Ethical Considerations for Data Sharing and Re-Use
+Programming and Iteration of Data Flows (Chapters 20-21)
+
+June 10-14
+Archiving and Preservation of Data
+Dimensional Reduction and Correlational Analyses
+Communication: RNotebooks, RMarkdown (Chapters 26-30)
+
+June 17-21
+Catch-up and Final Projects
+
+
+/Users/dcampbel/Library/Containers/com.apple.mail/Data/Library/Mail Downloads/2B805EDF-4A3F-4DDF-BE47-854008007BBE/Science 3991 Syllabus.pdf
