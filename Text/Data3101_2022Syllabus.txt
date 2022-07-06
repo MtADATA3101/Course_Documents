@@ -106,6 +106,7 @@ Open Data Repositories...
   Dryad
   Pangaea
 
+Meetings ~VIII to XX
 Optional Project FrameWorks
 (Student choses X of Y?
 Student choses independent?)
@@ -128,10 +129,12 @@ https://www.bioconductor.org/
 SnakeMake
 EggNog
 
-Final Meetings Presentations
-7) Interactive Data Exploration with Shiny
+Final Meetings XXII & XXIII Presentations
+-Interactive Data Exploration with Shiny
 Transferrable skill
 OR Python equivalent...
+
+-or PosterDown or formatted report from .Rmd + Zotero
 
 Consult with Matt Betti on Capstone?
 
