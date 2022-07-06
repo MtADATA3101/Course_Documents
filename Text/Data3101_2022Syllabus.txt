@@ -6,15 +6,39 @@ Learning Objectives:
 -use Git for reproducible version control
 -Iteration of Data Flows
 
+Approaches to Assessment?
+Engagement?
+Participatory Live Coding?
+Formative Assessments (after Carpentries...)
+How to assign grades
+  Send Elizabeth Ungrading
+
 Delivery Modalities:
 -all classes joint in person?
 -all classes separate?
--online?
--mix?
+-live online synchronous?
+-record asynchronously; cannot post recordings on GitHub
+-hybrid?
   Online fall back position in case of pandemic resurgence?
   Doug aiming to be on Campus Tues-Thurs through fall; some nights or weeks 'off' would be helpful
 
-
+-What technology(s) needed to support above options?
+  Do we go live in person with asynchronous recording backup?
+  Live online with asynchronous recording backup?
+    Easier for computer set up for Elizabeth & Doug
+    Technical troubles & installation visit in person with computer...
+      Elizabeth can count bookable appt. hours towards Library Reference Interaction
+      Set up first week in person
+      
+      Then move largely online?
+      Use break out rooms for catch up/set up
+      Teams is supported by IT
+      
+ 
+ 'Install Week' book appt. for set up & verification     
+  Actual hybrid is difficult
+  
+  
 Possible Structures:
 -multi-week student led projects leading to presentations?
   Advantage: self-directed
@@ -43,16 +67,39 @@ Possible Structures:
 
 Project and/or Live coding exercises of:
 
+Week I:
+ 'Install Week' book appt. for set up & verification     
+ How to motivate GitHub for the rest...
+ Git(Hub) for open science
+ Git(Hub) for version control
+ Transferrable Skill...
+ 
+ Data Nudism: What do You Have to Hide?
+ 
 1) Set up R, Git, GitHub, RStudio(.cloud?)
   https://happygitwithr.com/
   https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r/
 
+Week II:
+
+https://openrefine.org/
+  Lyme Data
+  Mesoscale data, interactive tidying...
+  Export script as json file for rerun with same column headings
+  
+Week III:
+  Now, fully scripted data handling for reproducibility and documentation...
+  
   R for Data Science Chapters 1-3
   https://r4ds.had.co.nz/
   Why Open Data?
   Why Tidy Data?
 
-2) Data Types, Workflow, and Data Transformation (R for Data Science Chapters 4-8)
+Week III
+
+Think of reminding people of Python chunks where suitable
+
+Data Types, Workflow, and Data Transformation (R for Data Science Chapters 4-8)
 
 3) MetaData and File Structuring...
   Case Studies in Coordinating data from multiple sources using file naming, directory naming and meta-data catalog
@@ -60,6 +107,11 @@ Project and/or Live coding exercises of:
 4) Data Wrangling (Chapters 11, 12, 14-16)
     Iteration of Data Flows (Chapters 17-19)
     Iteration of Data Flows (Chapters 20-21)  
+
+5) Open Data Repositories...
+Dryad
+Pangaea
+...
 
 Project FrameWorks:
 
@@ -81,7 +133,11 @@ SnakeMake
 EggNog
 
 CapStone
-7) Interactive Data Exploration with Shiny    
+7) Interactive Data Exploration with Shiny
+Transferrable skill
+OR Python equivalent...
+
+Consult with Matt Betti on Capstone?
     
 
 Calendar Syllabus
