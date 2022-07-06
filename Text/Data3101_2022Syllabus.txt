@@ -32,7 +32,9 @@ Possible Structures:
 Project and/or Live coding exercises of:
 
 1) Set up R, Git, GitHub, RStudio(.cloud?)
-  Happy with GitR
+  https://happygitwithr.com/
+  https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r/
+
   R for Data Science Chapters 1-3
   https://r4ds.had.co.nz/
   Why Open Data?
