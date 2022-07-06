@@ -1,4 +1,5 @@
 
+https://mtadata3101.github.io/.github/
 
 Learning Objectives:
 -Principles and goals of reproducible, ethical, open, data
@@ -22,6 +23,17 @@ Possible Structures:
 -Elizabeth seminars + discussion on topics series?
   Coordinate with course coverage?
   
+  Start with Research Data Life Cycle; start at the end; find & reuse data...
+    What resources are accessible?
+    Workshop on Accessing Stats Can data...
+    Vett Lloyd Lyme Disease data set published
+    Data entry errors useful to see...
+    Use 2 Canadian sample data sets
+    Then each student find data set of interest to them
+    Work through Research Data Management questions;  `
+      -ex. was data set well documented
+      Could work well on GitHub
+      
   Overview of Research Data Management
   Types, Formats, and Stages of Data
   Making Data Meaningful to Others
