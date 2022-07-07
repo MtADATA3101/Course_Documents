@@ -41,7 +41,7 @@ saveRDS(object = knitr::kable(DataWrangleTable), file = file.path("RGraphics", "
 ```{r trial flowchart}
 #https://datascienceplus.com/how-to-build-a-simple-flowchart-with-r-diagrammer-package/
 
-DiagrammeR::grViz("digraph flowchart {
+TrialFlowChart <- DiagrammeR::grViz("digraph flowchart {
       # node definitions with substituted label text
       node [fontname = Helvetica, shape = rectangle]        
       tab1 [label = '@@1']
@@ -62,5 +62,11 @@ DiagrammeR::grViz("digraph flowchart {
       [4]: 'Participants eligible for the study n=600'
       [5]: 'Study sample n=600'
       ")
+
+TrialFlowChart
+
+saveRDS(object = TrialFlowChart, file = file.path("RGraphics", "TrialFlowChart.Rds"))
+#readRDS(file = file.path("RGraphics", "TrialFlowChart.Rds"))
+
 ```
 
