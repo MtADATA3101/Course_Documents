@@ -1,0 +1,22 @@
+---
+title: "Data3101_Figures_Graphics"
+author:
+- Douglas A. Campbell
+output:
+  html_document:
+    df_print: paged
+    code_folding: hide
+    keep_md: yes
+    fig_caption: yes
+    toc: TRUE
+    toc_float: TRUE
+bibliography_software: ROS_Phytoplankton.bib
+bibliography_normal: ROS_Phytoplankton.bib
+csl: plos-one.csl
+
+---
+
+```{r libraries}
+library(tidyverse)
+library(DiagrammeR)
+```
