@@ -1,0 +1,62 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww37900\viewh17980\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf0 \expnd0\expndtw0\kerning0
+12 Rules for interconversion and portability of data.\
+Think of Future You and Future Us; you are unlikely to individually complete a publishable or final project within your time in a group.\
+\
+1. TidyData has 1 variable per column,  1 observation per row\
+\
+2. Every data(frame) column needs a variable label, with units.\
+	Alternative: use short column names, with a separate Data Dictionary table giving units and verbose variable definitions\
+	Ex. a column name of 'chl' is acceptable ONLY if a separate Data Dictionary table gives chl: ug chl mL-1\
+	etc.\
+	Convention Example: CampbellCaseLabels_units for data column variable labels, and for text data entries. \
+\
+3. Avoid special characters (`~@#$%^&*()-_=+[\{]\}\\|;:'",<.>/?) and leading numerals in variable names (Variable1 is OK; 1Variable is not).\
+\
+4. VariableName_units should be Consistent, Comprehensible and Concise.\
+	\
+5. One value in a given data frame cell:\'a0\
+	-unit label;\
+	-numeric data;\
+	-equation or formula with references to other cells (in spreadsheets; not applicable to R)\
+	-comment or text\
+\
+6. One class of data in a dataframe column (all numbers, all characters, all dates, all logical, etc.) \
+\
+7. Do not use formatting or location to imply information; be explicit.\
+	
+\f1\b Never
+\f0\b0  merge cells in spreadsheets. \'a0It makes editing and auditing difficult/impossible.\
+	Keep references within a row or a column; limit 'diagonal' references.\
+	 Avoid colours to highlight cells in spreadsheets. \'a0It makes a mess when editing.\
+\
+8. Do not bury data or constants within equations; put data or constants in their own cell, then refer to the cell from the equation in another cell (in spreadsheets, not applicable to R),\
+	In R consider source(Constants) to load set of resusable constants into memory, consistently across projects.\
+\
+9. (Almost) Never re-type or re-paste data or images. \'a0Use a reference to the original data cell, a script to pull data from a source or a script to put the image where needed. That way the data is auto-updating and easier to audit.\
+\
+10. \'a0Use  functions. \'a0Do not manually calculate averages or elapsed time etc. \'a0It is impossible to audit or update.\
+\
+11. Avoid unnecessary propagation of data workbooks and folders; one per project is often enough if you plan the layout.\
+	The project folder should contain an .Rproj.\
+\
+12. Within a project folder use relative paths to navigate among folders; that way the folder is transportable to other locations or users.\
+\
+The tidyverse:\
+http://r4ds.had.co.nz/\
+\
+Tidyverse coding style guide:\
+https://style.tidyverse.org/\
+\
+Data organization in spreadsheets:\
+https://www.tandfonline.com/doi/full/10.1080/00031305.2017.1375989\
+\
+Open Data Repository Practices:\
+https://datadryad.org/pages/reusabilityBestPractices}
