@@ -1,6 +1,23 @@
 
 https://mtadata3101.github.io/.github/
 
+# Contact Information
+
+Elizabeth Stregger
+Office: Library M13 
+Email: estregger@mta.ca
+Office hours / help: by appointment
+Request an appointment: https://mta.libcal.com/appointments/stregger
+
+# Resources
+
+All resources for this course are either Open Access (available free online) or available through the library.
+
+Bryan, J. (n.d.) Happy Git and GitHub for the useR. https://happygitwithr.com/index.html
+
+Wickham, H., & G. Grolemund. (n.d.) R for data science. https://r4ds.had.co.nz/
+
+
 # Learning Objectives
 - Principles, motivations and goals for reproducible, ethical, open, data
 - using Git for reproducible version control
