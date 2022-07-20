@@ -70,7 +70,7 @@ GitHub as primary content repository.
   Python + Jupyter Notebook
     GoogleEarthEngine
   
-Meeting 1:
+Meeting 1 (Elizabeth & Doug):
  'Install Week' lab sessions and/or book appt. for set up & verification     
  Motivate GitHub:
   -for open science
@@ -86,21 +86,33 @@ Python, Jupyter Notebook (later?)
   Why Tidy Data?
   Data Nudism; What do You have to Hide?
   
-Meeting 2
-  Elizabeth 
-  Research Data Management: Overview & Lifecycle
-  Research Data Management: Finding and Reusing Data
+  To do (if you need help with install): Meet with Elizabeth.
+  https://mta.libcal.com/appointments/stregger
+  
+  To do: Create a repository in GitLab.
+
+Meeting 2 (Elizabeth):
+  
+  RDM: Overview & Research Data Management Lifecycle
+  RDM: Finding and Reusing Data
   Introduce 2 datasets for RDM portions of the course (Tick data and StatCan data)
   
-  Task: Choose a dataset of interest to you. Add it to your Git repository. 
+  To do: Choose a dataset of interest to you. You will use this dataset for to 
+  practice research data management skills. Add it to your Git repository. 
     
-Meeting 3
-  Elizabeth
-  Workshop: Cleaning data in OpenRefine (https://openrefine.org/)
-  Data set: Tick Data - 2012 to 2018 https://open.canada.ca/data/en/dataset/a3994d9e-ed40-fa6a-372d-f9820eae269d
+Meeting 3 (Elizabeth):
   
-  Task: Participatory workshop. Formative assessment questions throughout.
-  Task: Import a data file from the dataset you chose in Meeting 2. Try faceting, filtering, and clustering some of the columns. Are there any data problems to be corrected? Do you have questions about the dataset? Write a summary and add it to your Git repository. 
+  Workshop: Cleaning data in OpenRefine (https://openrefine.org/)
+  Data set: Tick Data - 2012 to 2018 
+  https://open.canada.ca/data/en/dataset/a3994d9e-ed40-fa6a-372d-f9820eae269d
+  
+  To do: Participate in the workshop. Formative assessment questions throughout.
+  
+  To do: Import a data file from the dataset you chose in Meeting 2. 
+  Facet, filter, and cluster some of the columns. 
+  Are there any data problems to be corrected? 
+  Do you have questions about the dataset? 
+  Write a summary and add it to your Git repository. 
   
   
 Meeting 4:
@@ -114,20 +126,34 @@ Meeting 5
 Remind people of Python chunks where suitable
 Data Types, Workflow, and Data Transformation (R for Data Science Chapters 4-8)
 
-Meeting 6, 7
-MetaData and File Structuring...
+Meeting 6 (Elizabeth):
+  
+  RDM: Data Management Plans
+  RDM: Documentation & Organization 
+
   Case Studies in Coordinating data from multiple sources using file naming, directory naming and meta-data catalog
+  
+Meeting 7
   
 Data Wrangling (Chapters 11, 12, 14-16)
     Iteration of Data Flows (Chapters 17-19)
     Iteration of Data Flows (Chapters 20-21)  
 
-Meeting 8
+Meeting 8 (Elizabeth):
+  
+  RDM: Storage & Security
+  RDM: Legal & Ethical Considerations, Sensitive Data
+
+Meeting 9 (Elizabeth):
+
+  RDM: Long-term Storage & Preservation
+  RDM: Publishing & Citing
+  
 Open Data Repositories...
   Dryad
   Pangaea
 
-Meetings 9-22
+Meetings 10-22
 Optional Project FrameWorks
 (Student choses X of Y?
 Student choses independent?)
