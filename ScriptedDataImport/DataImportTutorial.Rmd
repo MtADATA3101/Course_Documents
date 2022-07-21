@@ -1,0 +1,180 @@
+---
+title: "Data Import Tutorial"
+author: "Douglas A. Campbell"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    df_print: paged
+---
+## Introduction
+Data is courtesy of Nerissa Fisher, UTS Australia
+
+This tutorial introduces import of single and multiple data files into R, following principles of R for Data Science
+  https://r4ds.had.co.nz/
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook, currently within a .Rproj on the RStudio.cloud server accessed through a web browser.
+This gives everyone exactly the same functionality through their browser, but runs slowly; be patient!
+
+To download a local copy of the .Rproj to run within RStudio:
+-click the button beside the 'Cloud' in the 'Files' pane;
+-click the 'More' gear icon
+-select 'Export'
+This will download a .zip file, which can be expanded to run a local version of the .Rproj.
+Note that packages are not downloaded in the .zip and may have to be installed for your local version of RStudio.
+
+When you execute code chunks by clicking a green arrow, or an option from the 'Run' pull down menu, the results appear beneath the code chunk.
+
+Text outside chunks is not run in R.
+Add new chunks by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+Libraries (or 'packages') contain additions to base R.
+```{r load libraries}
+library(tidyverse)
+  #tidyverse set of packages for data wrangling and plotting
+library(lubridate)
+  #assists with date formats
+```
+
+Importing data involves reading data in from a source folder(s), and saving formatted data.
+In a simple case the data files are stored in a folder within the .Rproj folder.
+
+In a simple case the data files are .csv, with a single row of column names that will be read as variable names, and one type of data in each column below the first row of names.
+
+As your import skills grow you will cope with more complex, less tidied data.
+
+Other approaches are:
+-loading in data from a GoogleSheet
+-webscraping;
+-accessing a folder outside the project using a file path
+
+## Project Variables
+Assign project-specific values to the variables 'Project', 'DataIn', 'PlotsPath', and 'ProcessData'.
+Then we can use these variables in subsequent code chunks.
+```{r set project variables}
+Project <- "DataImportTutorial"
+DataIn <- "DataIn"
+PlotsPath <- "Plots"
+ProcessData <- "ProcessData"
+
+#files use different encoding; UTF-8 is the current emerging standard; some instruments save files in different encodings
+FileEncode <- "UTF-8" 
+
+#data fields in files are separated by a symbol, example, "," for ".csv".  ".tsv" with a "tab" is a common format in Europe.
+Delimiter <- ","
+
+#Data files often have non-data 'header' rows above any data labels or values.
+#Setting a fixed number for 'header' rows is a brittle solution. It is better to figure out how to read all data starting at line that contains a key character string
+HeaderRows <- 0
+
+#Data files sometimes contain non-data comments, which are prefixed with a set character
+Comment <- '#'
+```
+
+## Interactively import a single file
+Click the 'Import Dataset' icon in the 'Environment Pane' (top right)
+Chose the 'From Text (readr)' option
+Browse to /cloud/project/DataIn/190902Linco_R.csv
+Click 'Import' to generate a data object automatically named the same as the source file.
+The 'Code Preview' window shows you the code that will be run to generate the import.
+```{r Import Dataset Code Preview}
+library(readr)
+X190902Linco_R <- read_csv("DataIn/190902Linco_R.csv")
+View(X190902Linco_R)
+```
+
+The 'Import Dataset' window allows you to change import options
+For example, I can interactively set the name of the imported object
+```{r  Import Dataset Code Preview}
+library(readr)
+ImportExample <- read_csv("DataIn/190902Linco_R.csv")
+View(ImportExample)
+```
+
+This interactive import is suitable for single file imports, and can help to generate example code for import.
+
+## Show Files in a Folder
+Show all files within the 'DataIn' path.
+Then generate a character vector containing only the names of data files that meet a set criteria, ".csv"
+```{r vector of data files}
+list.files(path = file.path(DataIn, fsep = .Platform$file.sep), full.names = TRUE)
+
+DataFiles <- list.files(path = file.path(DataIn, fsep = .Platform$file.sep), pattern = ".csv", full.names = TRUE)
+```
+Note that 'DataFiles' omits any files in the DataIn that do not meet criteria. Note that any files within the sub-folder 'BadData' are omitted; this is a quick way to manually segregate files from import, without deleting them.
+```{r data files}
+DataFiles
+```
+
+## Read in an example data file, and examine the result
+```{r read in an example data file}
+DataTest <- read_delim(file = "DataIn/190906Linco_R.csv", delim = Delimiter, comment = Comment, skip = HeaderRows)
+
+DataTest
+```
+Note some column names (variable names) that were generated by the original instrument use non-standard characters, that might cause problems later, ex. "1-qP" might be interpreted as 1 minus a non-existent variable "qP".
+We can either rename such variables, or suround them with ticks `1-qP` if using them (note these are `tick` not 'quote' marks).
+
+Note also the display of the data type in the column, just below the variable name.
+
+## Multiple Files
+Rather reading in files one at a time, we can read in all the files in the source folder that meet our criteria.
+First we generate a function 'read_delim_plus' that extends the capacity of 'read_delim' by adding the source filename as the value of a variable 'Flnm', and adds the date on which the file was originally created. Note that this CDateTime is not a reliable guide to the original data capture date because recopying the file may change this date.
+```{r read_delim_plus, warning=FALSE, message=FALSE}
+#generate read function using tidyverse read_delim
+#read_delim_plus adds filename and cdate
+read_delim_plus <- function(Flnm, Delimiter, HeaderRows, Comment){read_delim(file = Flnm, delim = Delimiter, comment = Comment, skip = HeaderRows) %>%
+    mutate(Filename = Flnm, CDateTime = ymd_hms(file.info(Flnm)$ctime))
+}
+```
+
+We use our character vector 'DataFiles' to pass to the purrr::map function that applies our read_delim_plus to each file in turn, and creates a list containing a dataframe from each imported file.
+We then expand the list object into a single long dataframe.
+There are other ways to do this.
+We will review purrr::map at a later date.
+```{r read data}
+Data <- DataFiles %>% 
+  map(~read_delim_plus(Flnm = ., Delimiter = Delimiter, Comment = Comment, HeaderRows = HeaderRows)) %>%
+  enframe() %>%
+  unnest(cols = value)
+```
+
+## Inspect the imported data  
+It is huge and will cause problems with knitting on RStudio.cloud if we display the entire 'Data'
+```{r inspect Data}
+#Data
+Data[1:10, 1:10]
+```
+
+## Save the imported data for further analyses
+.csv is a generic comma separated values format.
+.Rds is an internal R data format for rapid re-import into other RNotebooks or scripts.
+```{r save Data}
+saveRDS(Data, file = file.path(ProcessData,paste(Project, "Data", ".Rds",sep = ""),fsep = .Platform$file.sep))
+
+write_csv(Data, path = file.path(ProcessData,paste(Project, "Data",".csv",sep = ""),fsep = .Platform$file.sep))
+```
+
+Look at the 'ProcessData' folder and see the names of the saved data, constructed using the ProjectName and 'Data'.
+
+If we change the value for 'ProjectName' in 'Chunk 2 r set project variables' the output will have a new name.
+
+## Common Issues with Imports
+1. Data files not exactly parallel, with the same variables in the same column positions.
+This prevents bulk import of multiple files because column contents will not match.
+
+2. Non-standard data column labels (variable names)
+Variable names in R should contain only letters, numerals (after the first position) or "_".
+  Later data tidying can rename non-standard variables:
+  CampbellLabConvention_units
+  
+3. Multiple data types in the same column
+read_delim does not force data conversions, so all data in a column defaults to the most inclusive data type to accomodate all rows.
+
+As your skills grow your ability to cope with non-tidy data increases.
+Google knows everything; include 'tidyverse' in your search query to bias results towards tidyverse solutions.
+
+## Check the knitted .html
+The file DataImportTutorial.html contains the automatically formatted .html output of this tutorial.
+

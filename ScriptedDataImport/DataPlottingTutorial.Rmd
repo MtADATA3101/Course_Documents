@@ -1,0 +1,267 @@
+---
+title: "Data Visualization Tutorial"
+author: "Douglas A. Campbell"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    df_print: paged
+---
+## Introduction
+Data is courtesy of Nerissa Fisher, UTS Australia
+
+This tutorial introduces exploratory visualization of data in R, following tidyverse principles of R for Data Science
+  https://r4ds.had.co.nz/
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook, currently within a .Rproj on the RStudio.cloud server accessed through a web browser.
+This gives everyone exactly the same functionality through their browser, but runs slowly; be patient!
+
+To download a local copy of the .Rproj to run within RStudio:
+-click the button beside the 'Cloud' in the 'Files' pane;
+-click the 'More' gear icon
+-select 'Export'
+This will download a .zip file, which can be expanded to run a local version of the .Rproj.
+Note that packages are not downloaded in the .zip and may have to be installed for your local version of RStudio.
+
+When you execute code chunks by clicking a green arrow, or an option from the 'Run' pull down menu, the results appear beneath the code chunk.
+
+Text outside chunks is not run in R.
+Add new chunks by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+Libraries (or 'packages') contain additions to base R.
+```{r load libraries}
+library(tidyverse)
+  #tidyverse set of packages for data wrangling and plotting; includes ggplot2
+library(lubridate)
+  #assists with date formats
+```
+
+## Project Variables
+Assign project-specific values to the variables 'Project', 'DataIn', 'PlotsPath', and 'ProcessData'.
+Then we can use these variables in subsequent code chunks.
+```{r set project variables}
+Project <- "DataTidyTutorial"
+DataIn <- "DataIn"
+Plots <- "Plots"
+ProcessData <- "ProcessData"
+
+```
+
+## Import a tidied data object previously stored as .Rds object  
+We could alternatively import from a .csv object
+```{r read Rds}
+TidyData <- readRDS(file = file.path(ProcessData, "DataTidyTutorialTidyData.Rds", fsep =.Platform$file.sep))
+```
+
+## Look at Column Names to check for non-standard names  
+```{r column names}
+colnames(TidyData)
+```
+
+This TidyData set has a column (variable) "Filename" which identifies the original source of the observation values in the other columns.
+Other 'metadata' type columns include:  
+-"Species" (the species that was tested);  
+
+Independent Variables
+-"Lincomycin" (whether or not the inhibitor Lincomycin was present during the treatment); 
+-"Treatmentmin" (how many minutes of treatment were applied for a given row of observation);  
+-"Treatmentue" (how many umol photons m-2 s-1 (abbreviation ue) were applied during the treatment)  
+
+Other column categories include:  
+-instrument settings for each row of observation ("ELEDA", "ADC", "PAR", "Time", etc.)
+
+'Dependent' Variables
+-measured values ( "FoF", "Fm")
+
+Extracted Parameters
+-extracted by the instrument software from the measured values ("FvFmFqFm", "FvFq", "Sigma" etc.)
+
+## Plot "FvFmFqFm" vs. "Treatmentmin"
+The 'geom_point' shows observations of the variable FvFmFqFm on the Y vs. minutes of treatment on the X.
+(FvFmFqFm is... a fluorescence based metric of the activity of Photosystem II in suspensions of phytoplankton).
+
+We pass the TidyData to the 'ggplot()' function and tell ggplot to use Treatmentmin as an x axis, and FvFmFqFm as a y axis.
+Both of these variables are numeric, so we get an XY plot.
+```{r plot FvFmFqFm vs Treatmentmin}
+TidyData %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFm))
+```
+Hmmm. FvFmFqFm shows some pattern vs. Treatment min, but there is a lot of scatter, and the data seems to fall into 'low' and 'high' groups from 150 min onwards.
+```{r plot FvFmFqFm vs Species}
+TidyData %>%
+  ggplot() +
+  geom_point(aes(x = Species, y = FvFmFqFm))
+```
+Hmmm.
+Wide scatter within each species, but no obvious difference amongst them.
+Also, 'Species' is not a numeric variable, so the X axis is now categorical.
+
+## Plot "FvFmFqFm" vs. "Species"
+The experiment was run on different species; maybe they gave very different results?
+
+We pass the TidyData to the 'ggplot()' function and tell ggplot to use Treatmentmin as an x axis, and FvFmFqFm as a y axis.
+Both of these variables are numeric, so we get an XY plot.
+
+## Plot "FvFmFqFm" vs. "Treatmentmin" facetted by "Lincomycin"
+Maybe Lincomycin = 0/1 is important; it is an inhibitor.
+Segregate observations into separate columns based upon ""Lincomycin"  using 'facet_grid'.
+Add a 'geom_line' to connect observations.
+Add some labels.
+Save the ggplot as an object, FvFmFqFmTimeLincoPlot
+```{r FvFmFqFm vs Treatmentmin linco}
+#ggplot2 now requires variables used for facetting to be enclosed in vars()
+FvFmFqFmTimeLincoPlot <- TidyData %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFm)) +
+  geom_line(aes(x = Treatmentmin, y = FvFmFqFm)) +
+  facet_grid(cols = vars(Lincomycin)) + 
+  labs(title = Project, subtitle = "Lincomycin (0, 1) Treatment") +
+  theme_bw()
+
+FvFmFqFmTimeLincoPlot
+```
+Hmmmm.
+Now patterns are becoming more clear.
+When Lincomycin = 0 there is a drop (with scatter) and then a later recovery. 
+When Lincomycin = 1 there is a drop (exponential?) with scatter, and little recovery 
+So, our exploratory plotting suggests  effects of Lincomycin and Treatmentmin on FvFmFqFm
+
+Maybe the scatter arises from different experimental runs stored in different files?
+
+## Plot "FvFmFqFm" vs. "Treatmentmin" facetted by "Lincomycin" and "Filename"
+Segregate observations into different columns based upon "Lincomycin".
+Segregate observations into different rows based upon "Filename", using 'facet_grid'.
+
+```{r FvFmFqFm vs Treatmentmin linco files}
+FvFmFqFmTimeLincoFilesPlot <- TidyData %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFm)) +
+  geom_line(aes(x = Treatmentmin, y = FvFmFqFm)) +
+  facet_grid(cols = vars(Lincomycin), rows = vars(Filename)) + 
+  labs(title = Project, subtitle = "Lincomycin (0, 1) Treatment", caption = "Filenames by Rows") +
+  theme_bw()
+
+FvFmFqFmTimeLincoFilesPlot
+```
+Hmmm.
+Segregating observations by Filename does not obviously influence the data patterns.
+Maybe the scatter results from the three different species that were tested?
+
+```{r Species tested}
+unique(TidyData$Species)
+```
+## Plot "FvFmFqFm" vs. "Treatmentmin" facetted by "Lincomycin" and "Species"
+Segregate observations into columns based upon "Lincomycin".
+Segregate observations into rows based upon "Species".
+Segregate observations by colour based upon 'Filename'.
+
+```{r FvFmFqFm vs Treatmentmin linco species}
+
+FvFmFqFmTimeLincoSpeciesPlot <- TidyData %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFm, colour = Filename)) +
+  geom_line(aes(x = Treatmentmin, y = FvFmFqFm, colour = Filename)) +
+  facet_grid(rows = vars(Species), cols = vars(Lincomycin)) + 
+  labs(title = Project, subtitle = "Lincomycin (0, 1) Treatment", caption = "Species by row; Filename by colour") +
+  theme_bw()
+
+FvFmFqFmTimeLincoSpeciesPlot 
+```
+Now we have data from each species in each row, with the originating Filename coded by colour of the points and the lines.
+Lincomycin = 1 is showing a fairly clear trend, but there is still large scatter in Lincomycin = 0
+
+Knowing the experimental design, measures were taken at two different levels of Treatmentue, which is a strong influence on the measures
+```{r Treatmentue}
+unique(TidyData$Treatmentue)
+```
+## Plot "FvFmFqFm" vs. "Treatmentmin" facetted by "Lincomycin" and "Species" with Treatmentue as colour.
+
+```{r FvFmFqFm vs Treatmentmin linco species  Treatmentue colour}
+#ggplot2 now requires variables used for facetting need to be enclosed in vars()
+#Treatmentue is a numeric variable, but we want to use it as a two-level factor for ggplot colour assignment
+FvFmFqFmTimeLincoSpeciesTreatmentuePlot  <- TidyData %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFm, colour = as.factor(Treatmentue))) +
+  geom_line(aes(x = Treatmentmin, y = FvFmFqFm, colour = as.factor(Treatmentue))) +
+  facet_grid(rows = vars(Species), cols = vars(Lincomycin)) + 
+  labs(title = Project, subtitle = "Lincomycin (0, 1) Treatment", caption = "Species by row; Treatmentue by colour") +
+  theme_bw()
+
+FvFmFqFmTimeLincoSpeciesTreatmentuePlot
+```
+Now we see that Treatmentmin covers two different periods for Treatmentue; an initial period of 1200 umol photons m-2 s-1, and a later period of 15 umol photons m-2 s-1 (uE is an abbreviation for umol photons m-2 s-1).
+Knowing the experimental design, we know that the 1500 umol photons m-2 s-1 is a high light stress period, and 15 umol photons m-2 s-1 is a subsequent low light recovery period.
+But the data points  under 1200 umol photons m-2s -1 (Treatmentue) are still scattered clusters.
+
+Examing TidyData we see that there are multiple rows of observations for each combination of:
+Date x Species x Lincomycin x Treatmentmin (and x Filename)
+The repeated observations are offset by small increments in the 'Time' column, which is the instrument internal clock time.
+```{r repeated measures}
+TidyData[1:10,1:10]
+```
+What if we average the data grouped into these observation combinations?
+
+## Plot averaged "FvFmFqFm" vs. "Treatmentmin" facetted by "Lincomycin" and "Species" with Filename as colour and Treatment uE as shape.
+```{r grouped average plot}
+#we include Treatmentue in the group_by so it is preserved in the grouped object
+#Treatmentue is a numeric variable, we use as.factor(Treatmentue) to convert it to discrete factor levels
+FvFmFqFmTimeLincoSpeciesGroupPlot <- TidyData %>%
+  group_by(Date, Species, Lincomycin,Treatmentmin, Treatmentue, Filename) %>%
+  summarize(FvFmFqFmGroup = mean(FvFmFqFm)) %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFmGroup, colour = as.factor(Filename), shape = as.factor(Treatmentue)), size = 3) +
+  geom_line(aes(x = Treatmentmin, y = FvFmFqFmGroup, colour = as.factor(Filename))) +
+  facet_grid(rows = vars(Species), cols = vars(Lincomycin)) + 
+  labs(title = Project, subtitle = "Lincomycin (0, 1) Treatment", caption = "Species by row; Treatmentue by colour") +
+  theme_bw()
+
+FvFmFqFmTimeLincoSpeciesGroupPlot
+```
+
+Now we see clear trends in the data averaged from the repeated measures.
+There are small (negligible?) differences among observations taken from different Filename sources (colour coded).
+This shows good reproducibility across separate runs.
+  (But, scatter among the repeated measures within a Filename run)
+There are strong influences of Lincomycin, that interact with Treatmentmin and with Treatmentue.
+FvFmFqFmGroup drops farther under Lincomycin = 1 and Treatmentue = 1200, and then does not recover under  Lincomycin = 1 and Treatmentue = 15.
+
+FvFmFqFmGroup drops less and plateaus under under Lincomycin = 0 and Treatmentue = 1200, and then recovers to near original levels under  Lincomycin = 0 and Treatmentue = 15 ..
+
+## Plot filtered"FvFmFqFm" vs. "Treatmentmin" facetted by "Lincomycin" and "Species" with Filename as colour and Treatment uE as shape.
+
+Alternately, rather than taking the average of the repeated measures, we could filter out the min and max values within each of these observation combinations.
+Note we do not initially save this plot as an object.
+```{r grouped filter plot}
+#we include Treatmentue in the group_by so it is preserved in the grouped object
+#Treatmentue is a numeric variable, we use as.factor(Treatmentue) to convert it to discrete factor levels to allow mapping symbol size to Treatmentue
+TidyData %>%
+  group_by(Date, Species, Lincomycin,Treatmentmin, Treatmentue, Filename) %>%
+  filter(FvFmFqFm != max(FvFmFqFm)) %>%
+  filter(FvFmFqFm != min(FvFmFqFm)) %>%
+  ggplot() +
+  geom_point(aes(x = Treatmentmin, y = FvFmFqFm, colour = as.factor(Filename), shape = as.factor(Treatmentue)), size = 3) +
+  geom_line(aes(x = Treatmentmin, y = FvFmFqFm, colour = as.factor(Filename))) +
+  facet_grid(rows = vars(Species), cols = vars(Lincomycin)) + 
+  labs(title = Project, subtitle = "Lincomycin (0, 1) Treatment", caption = "Species by row; Treatmentue by colour") +
+  theme_bw()
+```
+This filtering does not change much, there seems to be a large scatter among the repeated measures.
+
+So that is an issue for another day and deeper analyses.
+
+## Save the exploratory plot
+ggsave is part of the tidyverse
+Here we use it to save the plot as a ".png" and as a ".pdf"
+We can also save the ggplot object itself for later opening back into R.
+ggplot objects are self-contained lists of all the data and settings needed for ggplot to regenerate the plot.
+```{r save plots}
+ggsave(plot = FvFmFqFmTimeLincoSpeciesGroupPlot, filename = file.path(Plots,paste(Project, "FvFmFqFmTimeLincoSpeciesGroupPlot", ".png",sep = ""), fsep = .Platform$file.sep))
+
+ggsave(plot = FvFmFqFmTimeLincoSpeciesGroupPlot, filename = file.path(Plots,paste(Project, "FvFmFqFmTimeLincoSpeciesGroupPlot", ".pdf",sep = ""), fsep = .Platform$file.sep))
+
+#note the slightly different wording of the code in saveRDS vs. ggsave...
+saveRDS(FvFmFqFmTimeLincoSpeciesGroupPlot, file = file.path(Plots,paste(Project, "FvFmFqFmTimeLincoSpeciesGroupPlot", ".Rds",sep = ""), fsep = .Platform$file.sep))
+```
+Look in the 'Plots' folder to see the resulting .png, .pdf and .Rds objects.

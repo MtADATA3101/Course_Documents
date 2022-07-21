@@ -1,0 +1,222 @@
+---
+title: "Data Tidy Tutorial"
+author: "Douglas A. Campbell, Brian Beardsall"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    df_print: paged
+---
+## Introduction
+Data is courtesy of Nerissa Fisher, UTS Australia
+
+This tutorial introduces tidying of data in R, following tidyverse principles of R for Data Science
+  https://r4ds.had.co.nz/
+  
+Data import and tidying through scripts maintains a record of all changes, which can later be audited or modified as needed.
+This is an important part of 'OpenData' and 'OpenPublication'.
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook, currently within a .Rproj on the RStudio.cloud server accessed through a web browser.
+This gives everyone exactly the same functionality through their browser, but runs slowly; be patient!
+
+To download a local copy of the .Rproj to run within RStudio:
+-click the button beside the 'Cloud' in the 'Files' pane;
+-click the 'More' gear icon
+-select 'Export'
+This will download a .zip file, which can be expanded to run a local version of the .Rproj.
+Note that packages are not downloaded in the .zip and may have to be installed for your local version of RStudio.
+
+When you execute code chunks by clicking a green arrow, or an option from the 'Run' pull down menu, the results appear beneath the code chunk.
+
+Text outside chunks is not run in R.
+Add new chunks by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+Libraries (or 'packages') contain additions to base R.
+```{r load libraries}
+library(tidyverse)
+  #tidyverse set of packages for data wrangling and plotting
+library(lubridate)
+  #assists with date formats
+```
+
+Tidying data involves standardizing variable names, changing data types, filtering and rearranging data.
+
+As your tidying skills grow you will cope with more complex, less tidied data.
+
+## Project Variables
+Assign project-specific values to the variables 'Project', 'DataIn', 'PlotsPath', and 'ProcessData'.
+Then we can use these variables in subsequent code chunks.
+```{r set project variables}
+Project <- "DataTidyTutorial"
+DataIn <- "DataIn"
+PlotsPath <- "Plots"
+ProcessData <- "ProcessData"
+
+#files use different encoding; UTF-8 is the current emerging standard; some instruments save files in different encodings
+FileEncode <- "UTF-8" 
+
+#data fields in files are separated by a symbol, example, "," for ".csv".  ".tsv" with a "tab" is a common format in Europe.
+Delimiter <- ","
+
+#Data files often have non-data 'header' rows above any data labels or values.
+#Setting a fixed number for 'header' rows is a brittle solution. It is better to figure out how to read all data starting at line that contains a key character string
+HeaderRows <- 0
+
+#Data files sometimes contain non-data comments, which are prefixed with a set character
+Comment <- '#'
+```
+
+## Import a data object previously stored as .Rds object, or as a .csv object
+
+Even though we import from two different file formats, the resulting data objects are identical.
+```{r read Rds}
+DataRDS <- readRDS(file = file.path(ProcessData, "DataImportTutorialData.Rds", fsep =.Platform$file.sep))
+
+DataCSV <- read_delim(file = file.path(ProcessData, "DataImportTutorialData.csv", fsep =.Platform$file.sep), delim = Delimiter, comment = Comment, skip = HeaderRows)
+```
+
+## Look at Column Names to check for non-standard names  
+```{r column names}
+colnames(DataRDS)
+```
+Variable naming involves 3 general criteria:
+1. Consistent; 1 name for 1 variable
+2. Legible; variable name should be informative to a reader as to the data content of the variable
+3. Concise; variable name should be short and easy to type.
+
+These three criteria may conflict.
+Consistent is definitely the top priority.
+More legible & verbose names may take priority over conciseness.
+
+To these 3 general criteria, for R we have an additional consideration of 'syntatic' vs. 'non-syntactic' variable names.
+Syntatic variable names include only letters, numerals and "_", and do not start with numerals.
+
+Note the many non-standard characters in the column names for DataRDS (which are now 'variable names'):
+space, ', /, -, (, ), [, ], 
+These characters may, or may not, cause problems later in R.
+One way forward is to replace all of them.
+"[[:punct:]]" is a REGEX expression for all punctuation characters, which include all our problematic characters.
+We create a character vector, newcolnames, by taking the colnames of the DataRDS object and replacing "[[:punct:]]" with with "", nothing.
+Then we remove all " " spaces in the elements of the newcolnames.
+Then we remove the "°", just in case.
+
+```{r create newcolnames}
+newcolnames <- str_replace_all(colnames(DataRDS), "[[:punct:]]", "") %>%
+  str_replace_all(" ", "") %>% 
+  str_replace_all("°", "")
+newcolnames
+```
+Then we rename the columns using the newcolnames, creating the new data object TidyData while we do it.
+```{r rename columns}
+#Doug does not completely understand this code... but it works, Google knows all
+TidyData <- DataRDS %>% 
+  `colnames<-`(newcolnames)
+
+colnames(TidyData)
+```
+
+In general, we avoid removing columns.
+But some variable values also contain punctuation characters.
+We cannot use replace all "[[:punct:]]" because that would remove "." decimal place in the tibble (dataframe)
+Instead in this case we remove the problematic characters by removing:
+-'Code' column which is now redundant with 'Lincomycin' and 'Treatmentmin';
+-'GPS', X41, X42, X43 columns which are meaningless because our instrument did not have GPS enabled
+
+This step is a bit reckless, because I am assigning the variable name 'TidyData' to a new, modified data object.
+The previous 'TidyData' object is thus lost.
+This limits the number of extraneous, intermediate data objects in the Global Environment, but it makes auditing harder if things go wrong.
+When starting out it can be safer to create a new data object at each step, so you can easily compare to see if the changes are what you intended at each step
+```{r variable tidy}
+TidyData <- TidyData %>% 
+  select(-c("Code", "GPS", "X41", "X42", "X43"))
+
+#safer initial version with new data object for comparison with TidyData
+# TidyData2 <- TidyData %>% 
+#   select(-c("Code", "GPS", "X41", "X42", "X43"))
+```
+
+We see the 'Date' column includes date information, but it is formatted as class 'character' column.
+The 'CDateTime' contains the date and time the file was created; not necessarily the same as the date the experiment was actually performed.
+'ymd' and 'ymd_hms' are functions from the 'lubridate' package.
+Note it is again risky to overwrite existing variable names with newly formatted content, but the alternative means a proliferation of extra data columns.
+The right choice depends upon whether there is any need for the original, as well as the reformatted, variable column.
+
+```{r fix dates}
+TidyData <- TidyData %>%
+  mutate(Date = ymd(Date),
+         CDateTime = ymd_hms(CDateTime))
+```
+
+Some of the rows are 'empty', which I can tell from missing or non-sensical data.
+We can remove them by filtering out all rows where the value of a given known variable = NA
+
+```{r filter TidyData} 
+TidyData <- TidyData %>%
+  filter(!is.na(Treatmentmin))
+```
+
+
+```{r TidyData preview}
+TidyData
+```
+
+Sometimes during initial import read function cannot unambiguously determine the class of the data in a column (variable), sometimes because of missing values, or rows with different classes of data.
+Species & Filename are columns  we want to remain as character class.
+Most other columns should be numeric.
+If the variable class is incorrect, we can convert numeral character columns to numeric.
+There are many functions to convert variables from one class to a different class (character to numeric, numeric to logical, character to factor...)
+```{r fix numerics}
+TidyData <- TidyData %>%
+  mutate_at(colnames(TidyData)[4:40],  as.numeric)
+
+#smarter alternative:
+#Use type_convert from readr (in the 'tidyverse' package) to re-parse all column types
+TidyDataAlt<- type_convert(TidyData)
+```
+
+## Save the tidied data for further analyses
+.Rds is an internal R data format for rapid re-import into other RNotebooks or scripts.
+.csv is a generic comma separated values format.
+```{r save TidyData}
+saveRDS(TidyData, file = file.path(ProcessData,paste(Project, "TidyData", ".Rds",sep = ""),fsep = .Platform$file.sep))
+
+write_csv(TidyData, path = file.path(ProcessData,paste(Project, "TidyData",".csv",sep = ""),fsep = .Platform$file.sep))
+```
+
+Here, we construct a file name by pasting together the value of the 'Project' variable with some text:
+```{r construct filename}
+paste(Project, "TidyData", ".Rds",sep = "")
+```
+
+Then, we add a file path to put the file in a sub-folder, rather than in the top directory for the project.
+```{r construct filepath}
+file.path(ProcessData,paste(Project, "TidyData", ".Rds",sep = ""),fsep = .Platform$file.sep)
+```
+Note the 'fsep = .Platform$file.sep'. This tells 'file.path' to construct a filepath using the appropriate file path separator for whatever platform is running the script ("/" for Mac, "\" for Windows, other options for other platforms).
+
+Then we save the contents of the data object TidyData to the file defined by the file.path
+```{r resave TidyData}
+saveRDS(TidyData, file = file.path(ProcessData,paste(Project, "TidyData", ".Rds",sep = ""),fsep = .Platform$file.sep))
+```
+
+
+Did we need to do this in many steps, or create many intermediate data structures?  
+No.  
+But long strings of %>% pipe are hard to follow and to debug when starting from scratch.
+```{r all at once}
+TidyData2 <- readRDS(file = file.path(ProcessData, "DataImportTutorialData.Rds"))
+
+newcolnames2 <- str_replace_all(colnames(TidyData2), "[[:punct:]]", "") %>%
+  str_replace_all(" ", "") %>%
+  str_replace_all("°", "")
+
+TidyData2 <- TidyData2 %>% 
+  `colnames<-`(newcolnames2) %>%
+  select(-c("Code", "GPS", "X41", "X42", "X43")) %>% 
+  mutate(Date = ymd(Date),
+         CDateTime = ymd_hms(CDateTime))  %>%
+  filter(!is.na(Treatmentmin))  %>%
+  type_convert()
+```
+
