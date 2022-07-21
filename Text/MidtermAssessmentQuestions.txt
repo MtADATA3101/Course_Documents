@@ -1,1 +1,19 @@
+DATA 3101 learning opportunities so far:
 
+Class:
+Have you asked questions?
+Have you answered questions?
+Have you helped other students or been helped by them?
+Have you kept up with live-coding and workshops?
+Have you given us one-up/one-down feedback? How often?
+If you have not contributed much, are there specific reasons why?
+If needed, could you improve your contributions to class / group activities?
+
+GitHub commits:
+
+Project plan:
+
+
+How do you feel about this style of learning?
+
+# Adapted from Dr. Andrea Morash's assessment for BIOL 4221
