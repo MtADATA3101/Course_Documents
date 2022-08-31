@@ -1,0 +1,212 @@
+# Data 3101 Syllabus 2022"  
+
+# Contact Information
+Elizabeth Stregger  
+Office: Library M13  
+Email: estregger@mta.ca  
+Office hours / help: by appointment  
+Request an appointment: https://mta.libcal.com/appointments/stregger  
+
+Douglas Campbell  
+Email: dcampbel@mta.ca  
+Office: 107 Gairdner  
+Office hours / help: appointment made by email  
+
+The instructors welcome diversity of origin, person, and perspective, and will strive to maintain an inclusive, welcoming environment.
+Let us show kindness to each other. There will be glitches; do not panic.
+
+We are aware of the challenges posed by mental or physical health issues. We, with the Meighen Centre, will work with students who need support.  
+Students are referred to the Academic Calendar regarding:  
+10.4.3 Withdrawal Without Penalty  
+10.6 Academic Integrity  
+10.3.2 Registration Deadlines; Students must be properly registered in a course to receive a grade on any assignment or test.    
+
+# Resources
+Open Access (available free online):
+
+https://github.com/MtADATA3101
+https://openrefine.org/
+https://www.r-project.org/
+Bryan, J. (n.d.) Happy Git and GitHub for the useR. https://happygitwithr.com/index.html
+https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r/
+Wickham, H., & G. Grolemund. (n.d.) R for data science. https://r4ds.had.co.nz/  
+
+# Draft Learning Objectives  
+## To be revised in light of student goals.  
+At the end of the course, students are expected to be able to:  
+
+Demonstrate in depth understanding of the principles, motivations and goals for reproducible, ethical, and open data
+
+Use Git for communication and reproducible version control  
+
+Import and tidy diverse data sources across platforms  
+
+Explore data to identify potential research questions or problems in the dataset  
+Identify best practices for research data management, including data organization, storage, security, sharing, and ethical re-use  
+ 
+Demonstrate what they have learned about data acquisition, data organization, and data tools through self-reflection    
+
+# Draft Assessment Plans  
+
+We will use participatory live coding for some sections of this class. We will write and narrate our code as we teach and you will join in by writing and executing the same code on your computers. This allows us to learn from each other's mistakes. Throughout the sessions, we will use problems or multiple choice questions to get real-time feedback on your learning and adjust our teaching.
+
+The sections on research data management (taught by Elizabeth) are lecture and discussion-based. Small assignments are listed under each module for you to work on throughout the term. You will add these assignments to Git and Elizabeth will provide feedback on Git. You can work through these assignments on your own timeline, but be prepared to discuss your progress at the Mid-term and Final meetings with Doug and Elizabeth.
+
+We will attempt un-grading principles emphasizing actionable feedback.
+What topics, concepts, or skills do you want to get from this course? 
+We aim to use your goals to tailor the course, and to track your progress.
+We seek to balance you demonstrating ability in areas where you are strong, with you developing areas where you are weaker.  
+
+-Student self-assessment of submissions, followed by opportunity to improve work.  
+-Tracking engagement, contributions and progress towards goals  
+-Self-, Peer- or Group-evaluation  
+  
+# Draft Course Term Plan
+## Module 1: Setup
+### Elizabeth & Doug;  8 Sept
+(Possible 13 Sept Help Session if Needed) 
+
+Motivate Data Management:  
+  Why Open Data?  
+  Why Tidy Data?  
+  Why a Data Management Plan?  
+
+ Motivate GitHub:  
+   For open science  
+   For version control  
+   Transferrable Skill...  
+   
+ 'Install Week' lab sessions:  
+Book appt. for set up & verification if needed 
+Git, GitHub;  
+R, RStudio;  
+OpenRefine;  
+Python, Jupyter Notebook (later?)
+
+To do: (if you need help with install):  
+Meet with Elizabeth (Windows, Mac, Linux)  
+https://mta.libcal.com/appointments/stregger  
+ 
+Resources: 
+https://happygitwithr.com/  
+https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r/  
+
+## Module 2: Research Data Management  
+### Elizabeth:  13, 15 September  
+
+  Overview & Research Data Management Lifecycle  
+  Finding and Reusing Data  
+  Introduce 2 datasets for RDM portions of the course (Tick data and StatCan data).  
+ 
+To do: Choose a dataset of interest to you or use provided examples. You will use this dataset to practice research data management skills. Add a link to this dataset in Git. Explain why this dataset interests you.  
+
+## Module 3: Cleaning Data in OpenRefine  
+### Elizabeth: 20 Sept.  
+Cleaning data in OpenRefine (https://openrefine.org/)  
+  Data set: Tick Data - 2012 to 2018  
+  https://open.canada.ca/data/en/dataset/a3994d9e-ed40-fa6a-372d-f9820eae269d
+ 
+  To do: Participate in the workshop, including asking and answering questions.
+ 
+  To do: Import a data file from the dataset you chose in Module 2 into OpenRefine.
+  Facet, filter, and cluster some of the columns.
+  Are there any data problems to be corrected?
+  Do you have questions about the dataset?
+  Write a summary and add it to your Git repository.  
+  
+## Module 4: Scripted Data Import  
+### Doug: 22 Sept  
+Scripted data import and handling for reproducibility and documentation with large scale data sets.  
+
+### Doug 27, 29 Sept  
+Data Types, Workflow, and Data Transformation (R for Data Science Chapters 4-8)  
+
+## 10 Sept Truth & Reconciliation Day   
+
+## Module 5: Data Management Plans  
+### Elizabeth: 4, 6 Oct  
+  Data Management Plans
+  Documentation & Organization
+  Data Dictionary
+
+To do: Look at the documentation accompanying the dataset you chose in Module 2. Would you be able to reuse it without asking the original researcher(s) questions? What questions do you have about the data now that you know some best practices? Would a Data Management Plan have helped? Add your thoughts in Git.  
+
+## 10 Oct Thanksgiving Monday    
+
+## Module 6: Case Study Data Management Practice  
+### Doug: 11, 13 Oct  
+Coordinating data from multiple sources using file naming, directory naming and meta-data catalog
+Importing, assembling and managing instrumental data
+    Encoding issues from older instrumentation
+    Interactive import (.Rmd) vs. fully scripted batch import (.R)  
+    
+## Module 7: Webscraping  
+### Elizabeth: 18, 20 Oct  
+https://doi.org/10.1080/10691898.2020.1787116
+https://github.com/mdogucu/web-scrape
+    
+## Mid-term assessment check ins  
+
+### Elizabeth & Doug:  25, 27 Oct   
+TimeTable meeting through Teams  
+Review progress, goals and gaps  
+Decide whether to pursue individual project or continue with packaged project & content
+
+## 28 Oct 20% of grade back to students  
+
+## Module 8: Iteration  
+### Doug 1, 3 Nov  
+R for Data Science Chapters 17-21  
+
+## 7-11 Nov Study Break  
+
+## Module 9: Storage, Security, Ethics  
+### Elizabeth: 15 Nov  
+  Storage & Security
+  Legal & Ethical Considerations, Sensitive Data
+
+To do: Looking at the data set you selected in Module 2, what kinds of storage and security precautions would you have recommended for the working files? Are there any ethical considerations or sensitive data? Add your comments to Git.  
+
+## Module 10: Long Term Data, Publishing & Citing  
+### Elizabeth: 17 Nov  
+  Long-term Storage & Preservation
+  Publishing & Citing
+ 
+To do: Search for the dataset you selected in Module 2. Is it in one or more repositories? Which ones? Are they a good match for the subject matter or geography of the dataset? 
+Is there a data license for the dataset you selected? If so, what limitations exist for how you can reuse the data?
+Create a citation for the dataset. Tell me which citation style you have chosen.
+Add your comments to Git.  
+
+## Module 11: Data Exploration with Shiny  
+### Doug:  22, 24 Nov  
+
+## Module 12: Project Presentations  
+### Students: 29 Nov, 1 Dec  
+Earlier if ready.  
+
+## 6 Dec last class  
+
+# Optional Projects  
+In parallel with the structured coverage students may chose a directed or independent project, individually or in groups.
+Scope and scale of group projects should be larger than individual projects.
+The project should generate one or more 'presentation' outputs:  
+-knit report from .Rmd or Python equivalent  
+-Slidy  
+-PosterDown  
+-Shiny Interactive Site (or Python or other Equivalent)  
+-Structured Tutorial on a topic (aka Data Carpentries...)  
+
+## Some Possible Project Areas  
+### Project in BioInformatics  
+https://www.bioconductor.org/  
+
+### Project Using the GoogleEarth platform  
+https://github.com/r-spatial/rgee  
+
+### Project Using Environment Canada Data  
+
+### Project Using DataStream Water Quality Data  
+
+### Project Using Timeseries Analyses with Zoo
+
+
