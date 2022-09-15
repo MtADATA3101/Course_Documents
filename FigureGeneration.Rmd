@@ -79,9 +79,9 @@ MetaDataDataFlowChart <- DiagrammeR::grViz("digraph flowchart {
       }
 
       [1]: 'MetaData; each culture bears a unique ID, ex. DoCa1001'
-      [2]: 'Instrument1 maintains and logs growth of culture DoCa1001'
+      [2]: 'Instrument1 maintains and logs culture growth'
       [3]: 'Script1 estimates growth rate'
-      [4]: 'Instrument2 captures 20220607 spectra of DoCa1001'
+      [4]: 'Instrument2 captures 20220607 spectra'
       [5]: 'Script2 estimates pigment content'
       [6]: 'MergedDataFrame'
       ")
