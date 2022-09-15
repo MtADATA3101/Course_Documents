@@ -5,4 +5,4 @@
 
 2. Generate a Data Management flow diagram adapted for your area of interest
 (health data management; climate data archives; economic data; literature repositories;  ....)
-
+Save the diagram as a .png and push to your GitHub repository for DATA3101.
