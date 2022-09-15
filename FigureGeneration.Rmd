@@ -69,6 +69,7 @@ MetaDataDataFlowChart <- DiagrammeR::grViz("digraph flowchart {
       tab6 [label = '@@6']
 
       # edge definitions with the node IDs
+      tab1 -> tab2;
       tab1 -> tab6;
       tab2 -> tab3;
       tab2 -> tab4
@@ -78,7 +79,7 @@ MetaDataDataFlowChart <- DiagrammeR::grViz("digraph flowchart {
       }
 
       [1]: 'MetaData; each culture bears a unique ID, ex. DoCa1001'
-      [2]: 'Instrument1 logs growth of culture DoCa1001'
+      [2]: 'Instrument1 maintains and logs growth of culture DoCa1001'
       [3]: 'Script1 estimates growth rate'
       [4]: 'Instrument2 captures 20220607 spectra of DoCa1001'
       [5]: 'Script2 estimates pigment content'
