@@ -17,3 +17,5 @@ Tick Data: 2012 to 2018
 Link: https://open.canada.ca/data/en/dataset/a3994d9e-ed40-fa6a-372d-f9820eae269d
 We'll be using the file called "Tick Data - 2012 to 2018 (CSV)"
 Download this file
+
+Helpful info on Tick ID from the CDC: https://www.cdc.gov/ticks/tickbornediseases/tickID.html
