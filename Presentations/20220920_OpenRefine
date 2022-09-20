@@ -1,0 +1,19 @@
+This session is an OpenRefine workshop.
+
+Download OpenRefine: http://openrefine.org/download.html
+If you have a Windows operating system, and do not have Java installed, download the version labeled "Windows kit with embedded Java"
+Install OpenRefine.
+
+OpenRefine requires one of these browsers: Google Chrome, Chromium, Opera, or Microsoft Edge
+It will not work with Internet Explorer and is not supported in Firefox.
+
+If you need a new browser:
+Download and install a browser from the approved list if you don't already have one.
+You do not need to make the browser your default browser.
+Use the new browser to point at http://127.0.0.1:3333/ or http://localhost:3333 to launch OpenRefine.
+
+Download the dataset:
+Tick Data: 2012 to 2018 
+Link: https://open.canada.ca/data/en/dataset/a3994d9e-ed40-fa6a-372d-f9820eae269d
+We'll be using the file called "Tick Data - 2012 to 2018 (CSV)"
+Download this file
