@@ -25,8 +25,8 @@ As in any other class, you might want to take notes as we're working through the
 
 Things I need to remember every time I work in R after taking a break:
 
-\<- assignment operator shortcut for Mac Option + -\
-?function to get to help
+# <- assignment operator shortcut for Mac Option + -
+# ?function to get to help
 
 Doug adds comments about R code in code chunks. Explanatory text about the overall process is in text between chunks.
 
