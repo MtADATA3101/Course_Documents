@@ -1,0 +1,41 @@
+---
+title: "20220927_ScriptedDataImport1"
+author: "Elizabeth Stregger"
+date: "2022-09-28"
+output: html_document
+---
+
+**Scripted Data Import 1 - Due Thursday, September 29**
+
+Save the file you created in the Scripted Data Import session on Tuesday, September 27.
+
+It should be an Rmd file.
+
+Move the file from the ScriptedDataImport repository to your student repository. You can do this in Finder or your file manager.
+
+In your student repository, pull any changes that have been made to your repository.
+
+Stage, commit, and push the file to your repository.
+
+Create an issue and assign it to Doug Campbell for review
+
+**Adding a few notes will help you learn and remember:**
+
+As in any other class, you might want to take notes as we're working through the notebooks. It would be great to include these in the notebook. Here are some examples of notes that I added to mine as reminders.
+
+Things I need to remember every time I work in R after taking a break:
+
+\<- assignment operator shortcut for Mac Option + -\
+?function to get to help
+
+Doug adds comments about R code in code chunks. Explanatory text about the overall process is in text between chunks.
+
+Benefit of using file.path is that 1) it works! 2) avoids problems with Mac and Windows operating systems using different slashes in file names. More reproducible for others in the same group or using code later.
+
+**Additional resources:**
+
+R for Data Science: <https://r4ds.had.co.nz/>
+
+RStudio Cheatsheets: <https://www.rstudio.com/resources/cheatsheets/>
+
+If you have questions, you can request an appointment with Elizabeth: <https://mta.libcal.com/appointments/stregger>
