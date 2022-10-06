@@ -36,10 +36,13 @@ XXXXXFIX
 #install.packages("devtools")
 #install.packages("tidyverse")
 #install.packages("DiagrammeR")
+#install.packages("DiagrammeRsvg")
 
 #load package libraries
 library(tidyverse)
 library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
 ```
 
 ```{r data wrangling table}
@@ -112,6 +115,11 @@ MetaDataDataFlowChart
 
 saveRDS(object = MetaDataDataFlowChart, file = file.path("RGraphics", "MetaDataFlowChart.Rds"))
 
+# Create a PNG file
+MetaDataDataFlowChart %>%
+export_svg() %>%
+charToRaw %>%
+rsvg_png(file = file.path("RGraphics", "MetaDataDataFlowChart.png"))
 ```
 
 # Bibliography{-}
@@ -119,5 +127,6 @@ saveRDS(object = MetaDataDataFlowChart, file = file.path("RGraphics", "MetaDataF
 
 # Software Citations{-}
 <div id = "refs_software"></div>
+
 
 
