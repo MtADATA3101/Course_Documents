@@ -67,24 +67,46 @@ MetaDataDataFlowChart <- DiagrammeR::grViz("digraph flowchart {
       tab4 [label = '@@4']
       tab5 [label = '@@5']
       tab6 [label = '@@6']
+      tab7 [label = '@@7']
+      tab8 [label = '@@8']
+      tab9 [label = '@@9']
+      tab10 [label = '@@10']
+      tab11 [label = '@@11']
+      tab12 [label = '@@12']
 
       # edge definitions with the node IDs
       tab1 -> tab2;
-      tab1 -> tab6;
       tab2 -> tab3;
-      tab2 -> tab4
-      tab3 -> tab6;
-      tab4 -> tab5
-      tab5 -> tab6
+      tab3 -> tab12;
+      tab2 -> tab4;
+      tab1 -> tab4;
+      tab4 -> tab5;
+      tab5 -> tab12;
+      tab6 -> tab7;
+      tab7 -> tab9;
+      tab1 -> tab8;
+      tab2 -> tab8;
+      tab8 -> tab9;
+      tab9 -> tab12;
+      tab1 -> tab10;
+      tab2 -> tab10;
+      tab10 -> tab11;
+      tab11 -> tab12
       }
 
       [1]: 'MetaData; each culture bears a unique ID, ex. DoCa1001'
-      [2]: 'Instrument1 maintains and logs culture growth'
-      [3]: 'Script1 estimates growth rate'
-      [4]: 'Instrument2 captures 20220607 spectra'
-      [5]: 'Script2 estimates pigment content'
-      [6]: 'MergedDataFrame'
-      ")
+      [2]: 'MultiCulti maintains and logs culture growth'
+      [3]: 'Rmd1 imports and estimates growth rate'
+      [4]: 'Spectrophotometer captures spectra'
+      [5]: 'Rmd2 imports and estimates pigment content'
+      [6]: 'Light meter measures fluorometer lights'
+      [7]: 'Rmd3 imports and calibrates light levels'
+      [8]: 'Fluorometer measures PSII function'
+      [9]: 'Rmd4 imports and estimates Electron Transport'
+      [10]: 'Optode measures [O2]'
+      [11]: 'Rmd5 imports and tidies [O2]'
+      [12]: 'Rmd6 compares Electron Transport, [O2], Pigment Content & Growth Rates'
+    ") 
 
 MetaDataDataFlowChart
 
