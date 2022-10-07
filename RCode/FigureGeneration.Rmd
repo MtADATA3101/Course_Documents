@@ -55,7 +55,7 @@ DataWrangleTable <- tibble::tibble( Example = c("GoogleSheet", "OpenRefine", "RN
                                )
 
 knitr::kable(DataWrangleTable, caption = "Data Wrangling Approaches")
-saveRDS(object = knitr::kable(DataWrangleTable), file = file.path("RGraphics", "DataWranglingTable.Rds"))
+saveRDS(object = knitr::kable(DataWrangleTable), file = file.path("..", "RGraphics", "DataWranglingTable.Rds"))
 ```
 
 ```{r diatom dataflowchart}
