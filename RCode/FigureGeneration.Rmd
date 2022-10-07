@@ -86,13 +86,13 @@ DiatomDataFlowChart <- DiagrammeR::grViz("digraph flowchart {
 
 DiatomDataFlowChart
 
-saveRDS(object = DiatomDataFlowChart, file = file.path("RGraphics", "DiatomDataFlowChart.Rds"))
+saveRDS(object = DiatomDataFlowChart, file = file.path("..", "RGraphics", "DiatomDataFlowChart.Rds"))
 
 # Create a PNG file
 DiatomDataFlowChart %>%
 export_svg() %>%
 charToRaw %>%
-rsvg_png(file = file.path("RGraphics", "DiatomDataFlowChart.png"))
+rsvg_png(file = file.path("..", "RGraphics", "DiatomDataFlowChart.png"))
 ```
 
 
@@ -166,13 +166,13 @@ MetaDataFullFlowChart <- DiagrammeR::grViz("digraph flowchart {
 
 MetaDataFullFlowChart
 
-saveRDS(object = MetaDataFullFlowChart, file = file.path("RGraphics", "MetaDataFullFlowChart.Rds"))
+saveRDS(object = MetaDataFullFlowChart, file = file.path("..", "RGraphics", "MetaDataFullFlowChart.Rds"))
 
 # Create a PNG file
 MetaDataFullFlowChart %>%
 export_svg() %>%
 charToRaw %>%
-rsvg_png(file = file.path("RGraphics", "MetaDataFullFlowChart.png"))
+rsvg_png(file = file.path("..", "RGraphics", "MetaDataFullFlowChart.png"))
 ```
 
 
@@ -229,13 +229,13 @@ MetaDataSimpleFlowChart <- DiagrammeR::grViz("digraph flowchart {
 
 MetaDataSimpleFlowChart
 
-saveRDS(object = MetaDataSimpleFlowChart, file = file.path("RGraphics", "MetaDataSimpleFlowChart.Rds"))
+saveRDS(object = MetaDataSimpleFlowChart, file = file.path("..", "RGraphics", "MetaDataSimpleFlowChart.Rds"))
 
 # Create a PNG file
 MetaDataSimpleFlowChart %>%
 export_svg() %>%
 charToRaw %>%
-rsvg_png(file = file.path("RGraphics", "MetaDataSimpleFlowChart.png"))
+rsvg_png(file = file.path("..", "RGraphics", "MetaDataSimpleFlowChart.png"))
 ```
 
 
