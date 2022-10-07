@@ -1,0 +1,251 @@
+---
+title: "Data3101_Figures_Graphics"
+author:
+- Douglas A. Campbell:
+    institute: mta
+    email: dcampbel@mta.ca
+    correspondence: TRUE
+institute:
+  - mta: 'Department of Biology, Mount Allison University, 53 York St., Sackville NB, Canada, E4L 1C9.'
+date: "`r format(Sys.Date())`"  
+output:
+  bookdown::html_document2:
+    code_folding: show
+    keep_md: yes
+    fig_caption: yes
+    toc: TRUE
+    toc_float: TRUE
+    toc_depth: 6
+    pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
+      - '--lua-filter=multiple-bibliographies.lua'
+      
+     
+bibliography_software: Packages.bib
+bibliography_normal: ROS_Phytoplankton.bib
+csl: plos-one.csl
+
+https://community.rstudio.com/t/relative-path-to-local-lua-filter-saved-in-blogdown-repo/77854/2
+pandoc_args: !expr c(paste0("--lua-filter=", here::here("subfolder", "highlight.lua")), "--no-highlight")
+XXXXXFIX
+---
+
+```{r libraries}
+#only install packages once
+#install.packages("devtools")
+#install.packages("tidyverse")
+#install.packages("DiagrammeR")
+#install.packages("DiagrammeRsvg")
+
+#load package libraries
+library(tidyverse)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+```
+
+```{r data wrangling table}
+DataWrangleTable <- tibble::tibble( Example = c("GoogleSheet", "OpenRefine", "RNotebook", "RScript", "DataIku"),
+                                    Approach = c("Manual", "Interactive", "Interactive", "Scripted", "AI"),
+                                
+                                Reproducible = c("No", "Possible", "Yes", "Yes", "Possible"),
+                                StartUp = c("Quick", "Quick", "Moderate", "Moderate", "Slow"),
+                                Scale = c("Tiny", "Small", "Middle", "Big", "Bigger"),
+                               )
+
+knitr::kable(DataWrangleTable, caption = "Data Wrangling Approaches")
+saveRDS(object = knitr::kable(DataWrangleTable), file = file.path("..", "RGraphics", "DataWranglingTable.Rds"))
+```
+
+```{r diatom dataflowchart}
+DiatomDataFlowChart <- DiagrammeR::grViz("digraph flowchart {
+      # node definitions with substituted label text
+      node [fontname = Helvetica, fontsize = 24, shape = rectangle]
+      tab3 [label = '@@3']
+      tab4 [label = '@@4']
+      tab5 [label = '@@5']
+      
+      node [fontname = Helvetica, fontsize = 24, shape = oval] 
+      tab1 [label = '@@1'] 
+      tab2 [label = '@@2']
+ 
+      # edge definitions with the node IDs
+      tab1 -> tab3;
+      tab2 -> tab3;
+      tab3 -> tab4
+      tab4 -> tab5
+      }
+
+      [1]: 'Light meter measures treatment light'
+      [2]: 'Fluorometer measures PSII function'
+      [3]: 'Assemble Data & MetaData in Spreadsheet'
+      [4]: 'Rmd import and tidy Fluorometer Data'
+      [5]: 'Rmd estimate Rates of Change of PSII Function'
+    ") 
+
+DiatomDataFlowChart
+
+saveRDS(object = DiatomDataFlowChart, file = file.path("..", "RGraphics", "DiatomDataFlowChart.Rds"))
+
+# Create a PNG file
+DiatomDataFlowChart %>%
+export_svg() %>%
+charToRaw %>%
+rsvg_png(file = file.path("..", "RGraphics", "DiatomDataFlowChart.png"))
+```
+
+
+```{r metadata fullflowchart}
+#https://datascienceplus.com/how-to-build-a-simple-flowchart-with-r-diagrammer-package/
+
+MetaDataFullFlowChart <- DiagrammeR::grViz("digraph flowchart {
+      # node definitions with substituted label text
+      node [fontname = Helvetica, fontsize = 24, shape = rectangle]
+      tab1 [label = '@@1']
+      tab3 [label = '@@3']
+      tab4 [label = '@@4']
+      tab6 [label = '@@6']
+      tab8 [label = '@@8']
+      tab10 [label = '@@10']
+      tab11 [label = '@@11']
+      tab13 [label = '@@13']
+      tab14 [label = '@@14']
+      tab15 [label = '@@15']
+      
+      node [fontname = Helvetica, fontsize = 24, shape = oval] 
+      tab2 [label = '@@2']
+      tab5 [label = '@@5']
+      tab7 [label = '@@7']
+      tab9 [label = '@@9']
+      tab12 [label = '@@12']
+      
+      # edge definitions with the node IDs
+      tab1 -> tab2;
+      tab2 -> tab3;
+      tab3 -> tab4;
+      tab4 -> tab15;
+      tab2 -> tab5;
+      tab1 -> tab5;
+      tab5 -> tab6;
+      tab6 -> tab15;
+
+      tab7 -> tab8;
+      tab8 -> tab10;
+
+      tab1 -> tab9;
+      tab2 -> tab9;
+      tab9 -> tab10;
+      tab10 -> tab11;
+      tab11 -> tab15
+      tab10 -> tab13
+      
+      tab1 -> tab12;
+      tab2 -> tab12;
+      tab12 -> tab13;
+      tab13 -> tab14;
+      tab14 -> tab15
+      }
+
+      [1]: 'MetaData; each culture bears a unique ID, ex. DoCa1001'
+      [2]: 'MultiCulti maintains and logs culture growth'
+      [3]: 'Rmd import and tidy growth logs'
+      [4]: 'Rmd estimate growth rates'
+      [5]: 'Spectrophotometer captures spectra'
+      [6]: 'Rmd import spectra and estimate pigment content'
+      [7]: 'Light meter measures fluorometer lights'
+      [8]: 'Rmd import and calibrate light levels'
+      [9]: 'Fluorometer measures PSII function'
+      [10]: 'Rmd import and tidy Fluorometer Data'
+      [11]: 'Rmd estimate Electron Transport'
+      [12]: 'Optode measures [O2]'
+      [13]: 'Rmd import and tidy [O2]'
+      [14]: 'Rmd estimate [O2] Rates'
+      [15]: 'Rmd compare Electron Transport, [O2], Pigment Content & Growth Rates'
+    ") 
+
+MetaDataFullFlowChart
+
+saveRDS(object = MetaDataFullFlowChart, file = file.path("..", "RGraphics", "MetaDataFullFlowChart.Rds"))
+
+# Create a PNG file
+MetaDataFullFlowChart %>%
+export_svg() %>%
+charToRaw %>%
+rsvg_png(file = file.path("..", "RGraphics", "MetaDataFullFlowChart.png"))
+```
+
+
+```{r metadata data simpleflowchart}
+MetaDataSimpleFlowChart <- DiagrammeR::grViz("digraph flowchart {
+      # node definitions with substituted label text
+      node [fontname = Helvetica, fontsize = 24, shape = rectangle]
+      tab1 [label = '@@1']
+      tab4 [label = '@@4']
+      tab6 [label = '@@6']
+      tab7 [label = '@@7']
+      tab9 [label = '@@9']
+      tab10 [label = '@@10']
+      tab11 [label = '@@11']
+      
+      node [fontname = Helvetica, fontsize = 24, shape = oval] 
+      tab2 [label = '@@2']
+      tab3 [label = '@@3']
+      tab5 [label = '@@5']
+      tab8 [label = '@@8']
+      
+      # edge definitions with the node IDs
+      tab1 -> tab2;
+
+      tab3 -> tab4;
+      tab4 -> tab6;
+
+      tab1 -> tab5;
+      tab2 -> tab5;
+      tab5 -> tab6;
+      tab6 -> tab7;
+      tab7 -> tab11;
+      tab6 -> tab10;
+      
+      tab1 -> tab8;
+      tab2 -> tab8;
+      tab8 -> tab9;
+      tab9 -> tab10;
+      tab10 -> tab11
+      }
+
+      [1]: 'MetaData; each culture bears a unique ID, ex. DoCa1001'
+      [2]: 'MultiCulti maintains and logs culture growth'
+      [3]: 'Light meter measures fluorometer lights'
+      [4]: 'Rmd import and calibrate light levels'
+      [5]: 'Fluorometer measures PSII function'
+      [6]: 'Rmd import and tidy Fluorometer Data'
+      [7]: 'Rmd estimate Electron Transport'
+      [8]: 'Optode measures [O2]'
+      [9]: 'Rmd import and tidy [O2]'
+      [10]: 'Rmd estimate [O2] Rates'
+      [11]: 'Rmd compare Electron Transport, [O2]'
+    ") 
+
+MetaDataSimpleFlowChart
+
+saveRDS(object = MetaDataSimpleFlowChart, file = file.path("..", "RGraphics", "MetaDataSimpleFlowChart.Rds"))
+
+# Create a PNG file
+MetaDataSimpleFlowChart %>%
+export_svg() %>%
+charToRaw %>%
+rsvg_png(file = file.path("..", "RGraphics", "MetaDataSimpleFlowChart.png"))
+```
+
+
+
+
+# Bibliography{-}
+<div id = "refs_normal"></div>
+
+# Software Citations{-}
+<div id = "refs_software"></div>
+
+
+
