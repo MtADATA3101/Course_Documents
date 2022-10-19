@@ -1,0 +1,168 @@
+---
+title: "R Libraries and Functions"
+output: html_document
+date: "2022-10-17"
+---
+**Base R**
+
+```{r Base R functions}
+#data.frame
+#with()
+#for()
+ 
+```
+
+**Dplyr**
+[https://dplyr.tidyverse.org/articles/dplyr.html]
+
+The functions in dplyr are the common "verbs" you use in data manipulations.
+This example uses a dataset called starwars that is built into R for demonstration purposes
+```{r Dplyr functions}
+# Install packages once
+#install.packages("dplyr")
+library("dplyr")
+
+# Look at starwars tibble
+
+dim(starwars)
+starwars
+
+# The pipe: all dplyr functions take a data frame or tibble as the first argument. For efficiency, you can nest functions. The result from one step is piped to the next. You can read top-to-bottom, using %>% as "then"
+# In Rstudio, the keyboard shortcut for the pipe operator %>% is Ctrl + Shift + M (Windows) or Cmd + Shift + M (Mac)
+
+# functions used in class:
+
+# filter is used to choose rows based on column values
+# filter the starwars tibble for female characters with brown eyes
+# note that we need to use == to select the variables
+# filter selects rows where the expression is TRUE
+
+starwars %>%
+  filter(sex == "female", eye_color == "brown")
+
+# mutate is used to add new columns that are functions of existing columns
+# use mutate to create a new column for height in meters (in the existing dataset it is in cm)
+# by default the new column is added at the end of the dataframe
+
+starwars %>%
+  mutate(height_m = height / 100)
+
+# group_by is used to run a data operation on a group defined by variables. It is very useful in ggplot and in creating summaries
+# use group_by to summarise the mean height and mass, grouped by species and sex
+
+starwars %>%
+  group_by(species, sex) %>%
+  summarise(
+    height = mean(height, na.rm = TRUE),
+    mass = mean(mass, na.rm = TRUE)
+  )
+
+# count is used to count observations by group. You do not have to use the group by function.
+# count the number of individuals of each species in the starwars dataset
+
+starwars %>% count(species)
+
+#slice_max
+#left_join
+#anti-join
+```
+
+**Package: Polite**
+Developed by Dmytro Perepolkin
+[https://dmi3kno.github.io/polite/]
+
+Polite promotes good web etiquette during webscraping sessions.
+It includes two main functions "bow" and "scrape".
+Bow introduces the client to the host and asks for permission to scrape (it checks the robots.txt file).
+Scrape is the main function for retrieving the data.
+
+```{r Polite examples}
+# Install packages once
+#install.packages("polite")
+library("polite")
+
+# Examples of functions used in class, using cheese.com from package vignettes:
+
+# bow asks for permission to scrape (it checks the robots.txt file)
+host <- "https://www.cheese.com"
+session <- bow(host)
+session
+# Output indicates if the path is scrapable.
+
+# scrape follows bow. To scrape part of a website, you need to be able to identify and request sections of the website that match a css selector or Xpath expression using html_elements
+# session was defined in bow, above
+# To look at the website, ctrl+click and View page source or look at the developer view, depending on your browser. Selector Gadget can be helpful.
+
+result <- scrape(session, query=list(t="semi-soft", per_page=100)) %>%
+  html_node("#main-body") %>%
+  html_nodes("h3") %>%
+  html_text()
+head(result)
+
+# once you have scraped the data, create a new code chunk and do not run the request repeatedly. You may want to save the result to a file to work on it in another session, using write.csv
+```
+
+**Package: rvest**
+Developed by Hadley Wickham
+[https://rvest.tidyverse.org/]
+
+rvest is used for scraping (or harvesting) data from web pages.
+rvest is part of the tidyverse, but it can be installed separately
+
+```{r rvest examples}
+# Install packages once
+#install.packages("tidyverse")
+library("tidyverse")
+# or, can install rvest separately
+#install.packages("rvest")
+library("rvest")
+
+# Examples of functions used in class, using Star Wars example from vignette:
+
+# read_html is from the xml2 package. You can add encodings, which we didn't do in this class. In rvest, it is used to read/scrape the html document.
+
+starwars <- read_html("https://rvest.tidyverse.org/articles/starwars.html")
+
+# html_element and html_elements find HTML element(s) using CSS selectors or XPath expressions. Particularly useful in conjunction with SelectorGadget
+
+films <- starwars %>%
+  html_elements("section")
+films
+
+# html_element will find only the first element of that type. Compare films (above) and film (below)
+
+film <- starwars %>%  
+  html_element("section")
+film
+
+# html_text2 retrieves text from an html element. html_text2 simulates how text looks in a browser. Look at title below and titleNoMarkup
+
+title <- films %>%
+  html_elements("h2")
+title
+
+titleNoMarkup <- films %>%
+  html_elements("h2") %>%
+  html_text2()
+titleNoMarkup
+
+```
+
+**Package: gutenbergr**
+
+```{r Gutenbergr}
+#install.packages("devtools")
+library("devtools")
+#devtools::install_github("ropensci/gutenbergr")
+library("gutenbergr")
+
+#gutenberg_works
+#gutenberg_download
+```
+
+**Package: tidytext**
+
+```{r Tidytext functions}
+#stop_words
+#get_sentiments
+```

@@ -1,0 +1,234 @@
+title: "Web Scraping Part 1"
+author: "Elizabeth Stregger"
+output: html_document
+---
+**General reminders for live coding**
+
+%>% (pipe operator) is Ctrl + Shift + M (Windows) Cmd + Shift + M (mac)
+<- assignment operator) is Alt + - (Windows) or Option + - (Mac).
+run a line of code from the source editor use Ctrl+Enter (Windows) or Cmd+Enter (Mac)
+tab to autocomplete long variable names
+
+```{r install packages and libraries}
+#Install packages once
+#install.packages("tidyverse")
+#install.packages("dplyr")
+install.packages("rvest")
+install.packages("polite")
+install.packages("tidytext")
+
+library("tidyverse")
+library("dplyr")
+library("rvest")
+library("polite")
+library("tidytext")
+```
+
+Package: polite
+Developed by Dmytro Perepolkin see: https://dmi3kno.github.io/polite/
+
+Two main functions “bow” and “scrape” bow introduces the client to the host and asks for permission to scrape (it checks the robots.txt file)
+scrape is the main function for retrieving the data
+
+Three pillars of a polite session: seeking permission, taking slowly, and never asking twice
+
+**Example one: Instagram**
+Use polite to bow to a website that does not allow scraping.
+```{r Instagram session}
+InstagramSession <- bow("https://www.instagram.com/")
+InstagramSession
+```
+
+**Example two: Hadley Wickham’s Star Wars Page** 
+We’re working through a vignette using rvest package with Selector Gadget: [https://rvest.tidyverse.org/articles/selectorgadget.html]
+
+```{r StarWars session}
+StarWarsSession <- bow("https://rvest.tidyverse.org/articles/starwars.html")
+StarWarsSession
+```
+
+Even if the path is scrapable, check Terms of Use for websites to see if scraping is allowed. If there is an API (application programming interface) use it.
+
+Are there terms of use in this case? Permission is explicitly given.
+
+If you’re confident with CSS and HTML, can use source code or developer view to identify the parts of the website that you want to scrape.
+
+Handy tool: SelectorGadget 
+SelectorGadget is an interactive JavaScript bookmarklet that helps you figure out CSS selectors for extracting components from a page.
+Let’s install SelectorGadget - works in Chrome 
+[https://rvest.tidyverse.org/articles/selectorgadget.html]
+
+```{r scrape Star Wars site}
+StarWarsHTML <- read_html("https://rvest.tidyverse.org/articles/starwars.html")
+```
+
+```{r Star Wars analysis}
+# Identify film names using SelectorGadget. Open the Star Wars page, click on the SelectorGadget button. Click on the first title. What code do you see? Did it select the rest of the film titles? If it selected anything extra, you can click on it to remove it.
+
+StarWarsTitles <- StarWarsHTML %>%
+  html_elements("main h2") %>%
+  html_text2()
+
+StarWarsTitles
+
+FilmNumber <- c(1:7)
+StarWarsTitles <- tibble(FilmNumber, StarWarsTitles)
+StarWarsTitles
+
+# Select all paragraphs of the movie intros. Click again to deselect elements that you don't want to use.
+# html_element (as opposed to html_elements) will select the first element of that type
+
+StarWarsDesc <- StarWarsHTML %>%
+  html_elements(".crawl p") %>%
+  html_text2()
+
+StarWarsDesc
+
+# Can we select all the data for one movie to connect the title and the description?
+
+StarWarsFilms <- StarWarsHTML %>%
+  html_elements("section")
+StarWarsFilms
+
+# Approaches to making a dataframe including title and description (from StarWarsTitles, StarWarsDesc, and/or StarWarsFilms)?
+# Need the two vectors to be the same length (Title 1 corresponds to paragraph descriptions 1:3) or we can create an index by movie number
+# Are there delimiters in the sections of StarWarsFilms that we could use to create new columns?
+
+# Add a column to StarWarsDesc with index numbers
+
+StarWarsDesc2 <- tibble("FilmNumber" = c(rep(c(1:6), each = 3), 7), "Desc" = StarWarsDesc)
+StarWarsDesc2
+
+# See R for Data Science on mutating joins https://r4ds.had.co.nz/relational-data.html
+StarWars <- left_join(x = StarWarsTitles, y = StarWarsDesc2, by = "FilmNumber" )
+StarWars
+```
+
+**Example 3: StatCan Daily"
+
+```{r bow to StatCan}
+StatCanSession <- bow("https://www150.statcan.gc.ca/n1/dai-quo/index-eng.htm?HPA=1")
+StatCanSession
+```
+Check terms and conditions on StatCan site: [https://www.statcan.gc.ca/en/reference/terms-conditions/general]
+No mention of scraping or robots
+
+```{r scrape StatCan daily headlines}
+StatCanTitles <- scrape(StatCanSession) %>%
+  html_elements("h3")
+StatCanTitles
+
+ExtractStatCanTitles <- StatCanTitles %>%
+  html_text2()
+ExtractStatCanTitles
+```
+
+**Demo 4: Project Gutenberg**
+
+```{r bow to Project Gutenberg}
+GutenbergSession <- bow("https://www.gutenberg.org/")
+GutenbergSession
+```
+Check Terms of Use: [https://www.gutenberg.org/policy/terms_of_use.html]
+Note: “Any perceived use of automated tools to access this website will result in a temporary or permanent block of your IP address.”
+
+However, there is an R package called gutenbergr that we can use. [https://github.com/ropensci/gutenbergr]
+
+```{r install devtools and gutenbergr}
+install.packages("devtools")
+library("devtools")
+devtools::install_github("ropensci/gutenbergr")
+library("gutenbergr")
+```
+
+To get to know the gutenbergr functions, look at github documentation or use help
+```{r find Dracula}
+gutenberg_works(title == "Dracula")
+#note the gutenberg_id: 345
+
+Dracula <- gutenberg_download(345)
+Dracula
+```
+
+Tidy Text in R
+Now that we’ve downloaded some textual data, I’ll introduce ideas for working with tidy text.
+
+My example is adapted from: Text Mining with R: A Tidy Approach
+Julia Silge and David Robinson [https://www.tidytextmining.com/index.html]
+
+Tidy data (Hadley Wickham):
+- Each variable is a column
+- Each observation is a row
+- Each type of observational unit is a table
+
+Tidy text: A table with one token per row. 
+A token is a meaningful unit of text. 
+Tokenization is the process of splitting text into tokens.
+If the text is tidy, can use other R functions we’ve introduced in the course.
+
+Another approach: creating a raw string, or “corpus”
+
+```{r Tidy Dracula}
+#unnesting the tokens makes a new data frame with one word per row. It also removes capitalization.
+
+TidyDracula <- Dracula %>%
+  unnest_tokens(word, text)
+TidyDracula
+
+# remove stop words, extremely common words such as "the"
+# tidytext has a dataset called stop_words
+
+data("stop_words")
+stop_words
+
+TidyDraculaNoStop <- TidyDracula %>%
+  anti_join(stop_words)
+
+# use count function from dplyr to find most common words
+
+TidyDraculaNoStop %>%
+  count(word, sort = TRUE)
+
+TidyDraculaNoStop %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 175) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word)) +
+  geom_col()
+```
+
+Sentiments
+
+Tidytext includes three general purpose sentiment lexicons:
+AFINN: score from -5 (negative) to 5 (positive) sentiment
+bing: positive or negative
+nrc: categories of positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust
+
+Note there are significant limitations due to lack of context.
+```{r sentiments}
+install.packages("textdata")
+library("textdata")
+
+NrcSentiments <- get_sentiments("nrc")
+
+# Note that you have to agree to cite the authors of nrc
+
+NrcJoy <- NrcSentiments %>%
+  filter(sentiment == "joy")
+
+NrcDracula <- left_join(x = TidyDraculaNoStop, y = NrcSentiments, by = "word")
+
+NrcDracula <- NrcDracula %>%
+  count(word, sentiment, sort = TRUE)
+
+NrcDracula %>%
+  group_by(sentiment) %>%
+  slice_max(n, n = 10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word,n)) %>%
+  ggplot(aes(n, word, fill=sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y")
+
+# custom_stop_words <- bind_rows(tibble(word = c("van"), lexicon = c("custom")), stop_words)
+```
