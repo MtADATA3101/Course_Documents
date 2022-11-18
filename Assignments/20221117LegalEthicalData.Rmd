@@ -1,0 +1,14 @@
+---
+title: "Retraction Watch Part 2"
+output: html_notebook
+---
+Note: If you are doing an independent project, this assignment is not required.
+
+Resources:
+http://retractiondatabase.org/RetractionSearch.aspx?
+Sensitive Data Toolkit for Researchers Part 3: Research Data Management Language for Informed Consent: https://zenodo.org/record/4107178#.Y3abkuzMLrA
+
+Choose an article in the Retraction Watch database that was retracted due to “Informed/Patient Consent – None/Withdrawn”
+Did the researchers believe they had consent?
+Why was the paper retracted?
+Would guidance from the Sensitive Data Toolkit for Researchers Part 3: Research Data Management Language for Informed Consent have prevented the problem?
