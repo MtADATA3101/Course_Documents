@@ -1,0 +1,16 @@
+Choose a retracted article from the Retraction Watch Database (http://retractionwatchdatabase.org), using the filter “Concerns about data” or “Error in data” or “Unreliable data”
+Note: examples that don’t include falsified data are usually more interesting!
+Read the Retraction Watch blog article (if available), and the retraction notice (if available)
+In your own words, write a description of the problem with the data. Which step of the research data lifecycle would you identify as the place where these researchers had problems?
+
+In your RStudio project (linked to your MtADATA3101 repository)
+Go to File – New File – R Markdown
+Give the file a human readable filename (can have spaces here)
+Add the text you created in Part 1 to the bottom of the bottom of the default text
+Save with a machine-readable filename (no spaces!)
+Go to Settings – Output Options – Advanced
+Check ”Keep markdown source file”
+Knit 
+In the Git pane, stage the new folder, commit, and push
+
+Goals for this assignment: identifying data problems in published scholarship, understanding where researchers could improve their research data management, testing GitHub repository setup
