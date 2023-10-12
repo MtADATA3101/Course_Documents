@@ -49,49 +49,48 @@ Git Repository setup
 Research data and common problems
 Data cleaning with OpenRefine
 
-Deadline: First Git deposit due Sep. 19
+Deadline: First Git deposit due Sep. 21
 
 ## Week 4 (Sep. 26 & 28)
 Data sources and reuse
-Data tidying in R
+GitHub & R Follow-up
 
 Deadline: Retraction Watch assignment due Sep. 26
 
 ## Week 5 (Oct. 3 & 5)
-Data Management Plans
-Data import in R: Spreadsheets
+Data Tidying in R Part 1
+Data Tidying in R Part 2
 
 Deadline: Choose a dataset & data cleaning due Oct. 3
 
 ## Week 6 (Oct. 10 & 12)
-Data documentation & organizationi
-Scripted data import in R
+Data Management Plans
+Data Documentation & Organization
 
-Deadlines: Deposit week 4 & week 5 code due Oct. 10
-Draft DMP due Oct. 12
+Deadlines: Deposit week 5 code due Oct. 10
 
 ## Week 7 (Oct. 17 & Oct. 19)
-Data Storage & Security
 Version control and documentation
+Data import in R: Webscraping Pt. 1
 
-Deadlines: Deposit week 6 code due Oct. 17
+Deadlines: Draft DMP due Oct. 19
 
 ## Week 8 (Oct. 24 & Oct. 26)
 Ungrading Meetings
 
 ## Week 9 (Oct. 31 & Nov. 2)
 Legal and Ethical Considerations
-Data import in R: Webscraping
+Data import in R: Webscraping Pt. 2
 
 Deadlines: Update DMP due Nov. 2
-Update weeks 4-5 code due Nov. 2
+Update week 5 code due Nov. 2
 
 ## Week 10 
 Reading Week
 
 ## Week 11 (Nov. 14 & Nov. 16)
-Working with Sensitive Data
-Data transformations in R: selected topic
+Working with Sensitive Data, Data storage & security
+Data import in R: Spreadsheets
 
 Deadline: Webscraping assignment due Nov. 16
 
