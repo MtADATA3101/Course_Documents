@@ -12,7 +12,7 @@ tab to autocomplete long variable names
 ```{r install packages and libraries}
 #Install packages once
 #install.packages("tidyverse")
-#install.packages("dplyr")
+install.packages("dplyr")
 install.packages("rvest")
 install.packages("polite")
 install.packages("tidytext")
@@ -35,21 +35,11 @@ Three pillars of a polite session: seeking permission, taking slowly, and never 
 **Example one: Instagram**
 Use polite to bow to a website that does not allow scraping.
 ```{r Instagram session}
-InstagramSession <- bow("https://www.instagram.com/")
-InstagramSession
+instagram_session <- bow("https://www.instagram.com/")
+instagram_session
 ```
 
-**Example two: Hadley Wickham’s Star Wars Page** 
-We’re working through a vignette using rvest package with Selector Gadget: [https://rvest.tidyverse.org/articles/selectorgadget.html]
-
-```{r StarWars session}
-StarWarsSession <- bow("https://rvest.tidyverse.org/articles/starwars.html")
-StarWarsSession
-```
-
-Even if the path is scrapable, check Terms of Use for websites to see if scraping is allowed. If there is an API (application programming interface) use it.
-
-Are there terms of use in this case? Permission is explicitly given.
+Even if the path is scrapable, check Terms of Use for websites to see if scraping is allowed. If there is an API (application programming interface) use it instead.
 
 If you’re confident with CSS and HTML, can use source code or developer view to identify the parts of the website that you want to scrape.
 
@@ -58,76 +48,32 @@ SelectorGadget is an interactive JavaScript bookmarklet that helps you figure ou
 Let’s install SelectorGadget - works in Chrome 
 [https://rvest.tidyverse.org/articles/selectorgadget.html]
 
-```{r scrape Star Wars site}
-StarWarsHTML <- read_html("https://rvest.tidyverse.org/articles/starwars.html")
-```
-
-```{r Star Wars analysis}
-# Identify film names using SelectorGadget. Open the Star Wars page, click on the SelectorGadget button. Click on the first title. What code do you see? Did it select the rest of the film titles? If it selected anything extra, you can click on it to remove it.
-
-StarWarsTitles <- StarWarsHTML %>%
-  html_elements("main h2") %>%
-  html_text2()
-
-StarWarsTitles
-
-FilmNumber <- c(1:7)
-StarWarsTitles <- tibble(FilmNumber, StarWarsTitles)
-StarWarsTitles
-
-# Select all paragraphs of the movie intros. Click again to deselect elements that you don't want to use.
-# html_element (as opposed to html_elements) will select the first element of that type
-
-StarWarsDesc <- StarWarsHTML %>%
-  html_elements(".crawl p") %>%
-  html_text2()
-
-StarWarsDesc
-
-# Can we select all the data for one movie to connect the title and the description?
-
-StarWarsFilms <- StarWarsHTML %>%
-  html_elements("section")
-StarWarsFilms
-
-# Approaches to making a dataframe including title and description (from StarWarsTitles, StarWarsDesc, and/or StarWarsFilms)?
-# Need the two vectors to be the same length (Title 1 corresponds to paragraph descriptions 1:3) or we can create an index by movie number
-# Are there delimiters in the sections of StarWarsFilms that we could use to create new columns?
-
-# Add a column to StarWarsDesc with index numbers
-
-StarWarsDesc2 <- tibble("FilmNumber" = c(rep(c(1:6), each = 3), 7), "Desc" = StarWarsDesc)
-StarWarsDesc2
-
-# See R for Data Science on mutating joins https://r4ds.had.co.nz/relational-data.html
-StarWars <- left_join(x = StarWarsTitles, y = StarWarsDesc2, by = "FilmNumber" )
-StarWars
-```
-
-**Example 3: StatCan Daily"
+**Example two: StatCan Daily**
 
 ```{r bow to StatCan}
-StatCanSession <- bow("https://www150.statcan.gc.ca/n1/dai-quo/index-eng.htm?HPA=1")
-StatCanSession
+statcan_session <- bow("https://www150.statcan.gc.ca/n1/dai-quo/index-eng.htm?HPA=1")
+statcan_session
 ```
 Check terms and conditions on StatCan site: [https://www.statcan.gc.ca/en/reference/terms-conditions/general]
 No mention of scraping or robots
 
 ```{r scrape StatCan daily headlines}
-StatCanTitles <- scrape(StatCanSession) %>%
+statcan_titles <- scrape(statcan_session) |> 
   html_elements("h3")
-StatCanTitles
-
-ExtractStatCanTitles <- StatCanTitles %>%
-  html_text2()
-ExtractStatCanTitles
+statcan_titles
 ```
 
-**Demo 4: Project Gutenberg**
+```{r extract titles}
+stat_can_titles_extract <- statcan_titles %>%
+  html_text2()
+stat_can_titles_extract
+```
+
+**Example three: Project Gutenberg**
 
 ```{r bow to Project Gutenberg}
-GutenbergSession <- bow("https://www.gutenberg.org/")
-GutenbergSession
+gutenberg_session <- bow("https://www.gutenberg.org/")
+gutenberg_session
 ```
 Check Terms of Use: [https://www.gutenberg.org/policy/terms_of_use.html]
 Note: “Any perceived use of automated tools to access this website will result in a temporary or permanent block of your IP address.”
@@ -146,8 +92,8 @@ To get to know the gutenbergr functions, look at github documentation or use hel
 gutenberg_works(title == "Dracula")
 #note the gutenberg_id: 345
 
-Dracula <- gutenberg_download(345)
-Dracula
+dracula <- gutenberg_download(345)
+dracula
 ```
 
 Tidy Text in R
@@ -171,9 +117,9 @@ Another approach: creating a raw string, or “corpus”
 ```{r Tidy Dracula}
 #unnesting the tokens makes a new data frame with one word per row. It also removes capitalization.
 
-TidyDracula <- Dracula %>%
+dracula_unnest <- dracula |> 
   unnest_tokens(word, text)
-TidyDracula
+dracula_unnest
 
 # remove stop words, extremely common words such as "the"
 # tidytext has a dataset called stop_words
@@ -181,15 +127,15 @@ TidyDracula
 data("stop_words")
 stop_words
 
-TidyDraculaNoStop <- TidyDracula %>%
+dracula_unnest_no_stopwords <- dracula_unnest |> 
   anti_join(stop_words)
 
 # use count function from dplyr to find most common words
 
-TidyDraculaNoStop %>%
+dracula_unnest_no_stopwords %>%
   count(word, sort = TRUE)
 
-TidyDraculaNoStop %>%
+dracula_unnest_no_stopwords %>%
   count(word, sort = TRUE) %>%
   filter(n > 175) %>%
   mutate(word = reorder(word, n)) %>%
@@ -209,19 +155,19 @@ Note there are significant limitations due to lack of context.
 install.packages("textdata")
 library("textdata")
 
-NrcSentiments <- get_sentiments("nrc")
+nrc_sentiments <- get_sentiments("nrc")
 
 # Note that you have to agree to cite the authors of nrc
 
-NrcJoy <- NrcSentiments %>%
+nrc_joy <- nrc_sentiments |> 
   filter(sentiment == "joy")
 
-NrcDracula <- left_join(x = TidyDraculaNoStop, y = NrcSentiments, by = "word")
+nrc_dracula <- left_join(x = dracula_unnest_no_stopwords, y = nrc_sentiments, by = "word")
 
-NrcDracula <- NrcDracula %>%
+nrc_dracula_count <- nrc_dracula |>
   count(word, sentiment, sort = TRUE)
 
-NrcDracula %>%
+nrc_dracula_count %>%
   group_by(sentiment) %>%
   slice_max(n, n = 10) %>%
   ungroup() %>%
