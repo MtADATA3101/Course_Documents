@@ -71,7 +71,7 @@ Deadlines: Deposit week 5 code due Oct. 10
 
 ## Week 7 (Oct. 17 & Oct. 19)
 Version control and documentation
-Data import in R: Webscraping Pt. 1
+Data transformations with dplyr
 
 Deadlines: Draft DMP due Oct. 19
 
@@ -80,25 +80,24 @@ Ungrading Meetings
 
 ## Week 9 (Oct. 31 & Nov. 2)
 Legal and Ethical Considerations
-Data import in R: Webscraping Pt. 2
+Class cancelled due to illness
 
-Deadlines: Update DMP due Nov. 2
+Deadlines: Update DMP cancelled
 Update week 5 code due Nov. 2
 
 ## Week 10 
 Reading Week
 
 ## Week 11 (Nov. 14 & Nov. 16)
-Working with Sensitive Data, Data storage & security
-Data import in R: Spreadsheets
-
-Deadline: Webscraping assignment due Nov. 16
+Data import: Webscraping Part 1
+Data import: Webscraping Part 2
 
 ## Week 12 (Nov. 21 & Nov. 23)
+Data storage & security
 Data Deposit
-Data transformation in R: selected topic
 
-Deadline: Update DMP due Nov. 21
+Deadlines: Webscraping assignment due Nov. 21
+Update DMP due Nov. 21
 Deposit week 11 code due Nov. 23
 
 ## Week 13 (Nov. 28)
