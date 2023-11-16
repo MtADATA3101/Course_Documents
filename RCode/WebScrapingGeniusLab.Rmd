@@ -1,5 +1,5 @@
 ---
-title: "Web Scraping: Genius Example and Lab"
+title: "Web Scraping: Genius Lab Setup"
 output: html_notebook
 ---
 **Shortcuts and reminders**
@@ -14,14 +14,13 @@ tab to autocomplete long variable names
 
 **Scraping song lyrics from Genius.com**
 ```{r install packages}
-#Install packages once
+#Install packages in console if necessary
 #install.packages("tidyverse")
 #install.packages("dplyr")
 #install.packages("rvest")
 #install.packages("polite")
 #install.packages("tidytext")
 #install.packages("textdata")
-#install.packages("geniusr")
 
 library("tidyverse")
 library("dplyr")
@@ -29,22 +28,32 @@ library("rvest")
 library("polite")
 library("tidytext")
 library("textdata")
-library("geniusr")
 ```
 
 Use bow function from Polite to see if we can scrape a site
-```{r bow to Genius}
-GeniusSession <- bow("https://genius.com/artists/Julie-doiron")
+```{r bow to Genius page for your chosen artist}
+GeniusSession <- bow("https://genius.com/artists/Janelle-monae")
 GeniusSession
 ```
 
-Check for an API and R package
+Check for an API and R package.
+There is a geniusr package developed by ewenme
 geniusr: https://ewenme.github.io/geniusr/
-API: https://docs.genius.com/
+However, there is an error in retrieving lyrics. Take a look at the issue called "error with "getlyrics_id()"
+We will instead load the version of geniusr forked by giovanni-cutri, using devtools to load his version from github.
+
+Additional setup:
+Create an account on Genius.com
+Go to genius.com/developers and Create an API Client
+Give your app a name in the format Data3101TestYourInitials
+Give your app a app website URL in the format https://github.com/MtADATA3101/lastname_firstname 
+
+You will need to copy the client access token to complete this exercise.
 
 Lab:
 Choose a different artist
-Following Web Scraping Part 1 Dracula example,
+Follow steps in this file to get song lyrics for your chosen artist
+Following Web Scraping Frankenstein example,
 - tokenize the lyrics
 - remove stop words
 - analyze using nrc lexicon
@@ -53,26 +62,32 @@ Following Web Scraping Part 1 Dracula example,
 - export the plot
 - add it to your GitHub repo
 
+
+In the command line, run the following line of code:
+devtools::install_github("giovanni-cutri/geniusr")
+
 ```{r set up genius token}
+library("geniusr")
 genius_token()
 ```
 
-**Example: Julie Doiron**
+**Example: Janelle Monae**
 ```{r identify artist and scrape lyrics}
-Artist <- "Julie Doiron"
+artist <- "Janelle Monae"
 
-GetArtistInfo <- search_artist(search_term = Artist)
+artist_info <- search_artist(search_term = artist)
 
-ArtistSongs <- get_artist_songs_df(GetArtistInfo$artist_id)
-head(ArtistSongs)
+artist_songs <- get_artist_songs_df(783)
+# If this line fails because there is more than one artist id for your group, look in the artist_info dataframe for the most likely id. Replace artist_info$artist_id with the id number.
+head(artist_songs)
 ```
 
 Get Lyrics
 ```{r get lyrics}
-#Approach 1
+#Approach 1: My attempt at creating a dataframe
 #lyrics <- data_frame()
-#for (i in 1:(nrow(ArtistSongs))) {
-#  songlyrics <- get_lyrics_id(ArtistSongs$song_id[i])
+#for (i in 1:(nrow(artist_songs))) {
+#  songlyrics <- get_lyrics_id(artist_songs$song_id[i])
 #  lyrics <- rbind(lyrics, songlyrics)
 #  i + 1
 #}
@@ -81,14 +96,14 @@ Get Lyrics
 #https://www.r-bloggers.com/2021/01/scraping-analysing-and-visualising-lyrics-in-r/
 #Use a tryCatch function / Question: would the function "possibly" work? That is what Doug has used.
 
-ids <- c(as.character(ArtistSongs$song_id))
-allLyrics <- data.frame()
+ids <- c(as.character(artist_songs$song_id))
+lyrics <- data.frame()
 
 while (length(ids) > 0) {
   for (id in ids) {
     tryCatch({
-      allLyrics <- rbind(get_lyrics_id(id), allLyrics)
-      successful <- unique(allLyrics$song_id)
+      allLyrics <- rbind(get_lyrics_id(id), lyrics)
+      successful <- unique(lyrics$song_id)
       ids <- ids[!ids %in% successful]
       print(paste("done - ", id))
       print(paste("New length is ", length(ids)))
@@ -96,4 +111,4 @@ while (length(ids) > 0) {
   }
 }
 
-head(allLyrics)
+head(lyrics)
