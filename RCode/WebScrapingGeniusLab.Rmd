@@ -21,6 +21,7 @@ tab to autocomplete long variable names
 #install.packages("polite")
 #install.packages("tidytext")
 #install.packages("textdata")
+#install.packages("devtools")
 
 library("tidyverse")
 library("dplyr")
@@ -28,6 +29,7 @@ library("rvest")
 library("polite")
 library("tidytext")
 library("textdata")
+library("devtools")
 ```
 
 Use bow function from Polite to see if we can scrape a site
@@ -62,6 +64,9 @@ Following Web Scraping Frankenstein example,
 - export the plot
 - add it to your GitHub repo
 
+Help for ggplot function (adding a title):
+Look at the ggplot2 cheatsheet available through Posit: https://posit.co/resources/cheatsheets/
+https://rstudio.github.io/cheatsheets/html/data-visualization.html?_gl=1*iv665*_ga*MTYzNDc4Nzk2Ny4xNjkxODg2NzQw*_ga_2C0WZ1JHG0*MTcwMDE0NzExMy4xMi4wLjE3MDAxNDcxMTMuMC4wLjA.#basics
 
 In the command line, run the following line of code:
 devtools::install_github("giovanni-cutri/geniusr")
@@ -102,7 +107,7 @@ lyrics <- data.frame()
 while (length(ids) > 0) {
   for (id in ids) {
     tryCatch({
-      allLyrics <- rbind(get_lyrics_id(id), lyrics)
+      lyrics <- rbind(get_lyrics_id(id), lyrics)
       successful <- unique(lyrics$song_id)
       ids <- ids[!ids %in% successful]
       print(paste("done - ", id))
@@ -112,3 +117,4 @@ while (length(ids) > 0) {
 }
 
 head(lyrics)
+```

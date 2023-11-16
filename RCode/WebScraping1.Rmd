@@ -9,6 +9,100 @@ output: html_document
 run a line of code from the source editor use Ctrl+Enter (Windows) or Cmd+Enter (Mac)
 tab to autocomplete long variable names
 
+Before we get into webscraping, I will introduce the dplyr package. This is the main package you use to transform a data frame. Some of the things you can do include filtering, arranging / sorting
+
+library(tidyverse)
+library(nycflights13)
+
+Basic structure of dplyr functions
+
+- first argument is a data frame
+- subsewuent argument describes which columns to operate on
+- output is always a new data frame
+
+each function is designed to do a single thing well, so we need to use the piple to combine functions to solve a complex function
+
+Dplyr functions operating on rows (using flight data)
+
+filter() keep rows based on values of the columns
+
+```{r filtering}
+
+?filter
+
+flights |> 
+  filter(dep_delay > 120)
+
+# combine multiple filters using & or | for OR
+flights |> 
+  filter(month == 10 & day == 18)
+```
+
+arrange
+```{r arrange}
+flights |> 
+  arrange(year, month, day, dep_time)
+
+# descending order
+
+flights_descending <- flights |> 
+  arrange(desc(dep_delay))
+```
+
+count the number of occurrences of a combination of values
+
+```{r}
+flights |> 
+  count(origin, dest, sort = TRUE)
+```
+working with columns
+
+mutate creates new columns from existing columns
+select changes which columns are present
+rename changes the name of a column
+relocate changes the position of a column
+
+```{r mutate}
+flights |> 
+  mutate( 
+    gain = dep_delay - arr_delay,
+    speed = distance / air_time * 60
+    )
+```
+
+select columns based on names of variables
+
+```{r select}
+flights |> 
+  select (year, month, day)
+
+flights |> select(year:day)
+flights |> select(!year:day) #select everything except!
+flights |> select(where(is.character))
+```
+
+working with groups
+group_by and summarize
+slice_functions allow you to extract specific rows within each group
+
+```{r}
+flights |> 
+  group_by(month) |> 
+  summarize(delay = mean(dep_delay, na.rm = TRUE))
+
+# n() returns the number of rows in each group - this is very useful
+flights |> 
+  group_by(month) |> 
+  summarize(delay = mean(dep_delay, na.rm = TRUE), 
+            n = n())
+
+flights |> 
+  group_by(dest) |> 
+  slice_max(arr_delay, n = 1) |> 
+  relocate(dest)
+```
+
+
 ```{r install packages and libraries}
 #Install packages once
 #install.packages("tidyverse")
@@ -23,6 +117,8 @@ library("rvest")
 library("polite")
 library("tidytext")
 ```
+
+Package: dplyr 
 
 Package: polite
 Developed by Dmytro Perepolkin see: https://dmi3kno.github.io/polite/
