@@ -1,0 +1,157 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r install packages & load libraries}
+library("tidyverse")
+library("dplyr")
+library("rvest")
+library("polite")
+library("tidytext")
+```
+
+New packages today:
+rvest
+polite
+
+"The three pillars of a polite session are seeking permission, taking slowly and never asking twice."
+- Polite https://dmi3kno.github.io/polite/
+
+Two main functions “bow” and “scrape” 
+bow introduces the client to the host and asks for permission to scrape (it checks the robots.txt file)
+scrape is the main function for retrieving the data
+
+```{r use polite to check Instagram permissions}
+instagram_session <- bow("https://www.instagram.com/")
+instagram_session
+```
+
+Example: StatCan Daily
+```{r use polite to check StatCan permissions}
+statcan_session <- bow("https://www150.statcan.gc.ca/n1/dai-quo/index-eng.htm")
+statcan_session
+```
+Even if the path is scrapable, check Terms of Use for websites to see if scraping is allowed. If there is an API (application programming interface) use it instead.
+ 
+If you’re confident with CSS and HTML, can use source code or developer view to identify the parts of the website that you want to scrape.
+
+```{r scrape StatCan site}
+statcan_titles <- scrape(statcan_session) |> 
+  html_elements("h3")
+statcan_titles
+```
+
+```{r extract titles}
+statcan_titles_extract <- statcan_titles |> 
+  html_text2()
+statcan_titles_extract
+```
+
+Example 3: Project Gutenberg
+```{r scrape Project gutenberg}
+gutenberg_session <- bow("https://www.gutenberg.org/")
+gutenberg_session
+```
+Check Terms of Use: [https://www.gutenberg.org/policy/terms_of_use.html]
+Note: “Any perceived use of automated tools to access this website will result in a temporary or permanent block of your IP address.”
+ 
+However, there is an R package called gutenbergr that we can use. [https://github.com/ropensci/gutenbergr]
+
+
+```{r install gutenbergr using devtools}
+#run this line in the console: install_packages("devtools")
+library("devtools")
+#run this line in the console: devtools::install_github("ropensci/gutenbergr)
+```
+
+```{r load gutenbergr library}
+library("gutenbergr")
+```
+
+Now you can use the functions in gutenbergr to search for titles and download the text.
+```{r locate Id for Frankenstein}
+gutenberg_works(title == "Frankenstein; Or, The Modern Prometheus")
+```
+
+```{r download Frankenstein}
+frankenstein <- gutenberg_download(41445)
+frankenstein
+```
+
+Text mining with R: https://www.tidytextmining.com/
+Julia Silge and David Robinson
+
+Tidy text: A table with one token per row. 
+A token is a meaningful unit of text. 
+Tokenization is the process of splitting text into tokens.
+If the text is tidy, can use other R functions we’ve introduced in the course.
+
+We'll use the unnest_tokens function to tokenize Frankenstein with one word per row.
+
+```{r unnest tokens}
+# required correction from Nov. 14 2023 lecture: change "words" to word so that anti-join works
+frankenstein_unnest <- frankenstein |> 
+  unnest_tokens(word, text)
+frankenstein_unnest
+```
+
+Stop words are common words such as "the" that we want to ignore in our analysis.
+```{r stop words}
+data("stop_words")
+stop_words
+```
+
+We now have 2 dataframes to work with.
+Anti-join: 2 dataframes, want to keep everything in the first one, use a column in the second dataframe to filter the first one.
+"Anti-joins are the opposite: they return all rows in x that don’t have a match in y." - R for data science
+
+```{r}
+frankenstein_meaningful <- frankenstein_unnest |> 
+  anti_join(stop_words) |> 
+  count(word, sort = TRUE)
+frankenstein_meaningful
+```
+
+In this plot, we've chosen to filter by words that have a count higher than 70 in the text. This number will vary depending on the text (or collection of lyrics in the assignment). How frequently are words repeated? Choose your own filter number to learn about your text.
+```{r plot frequency of words in Frankenstein}
+frankenstein_meaningful |> 
+  filter(n > 70) |> 
+  mutate(word = reorder(word, n)) |> 
+  ggplot(aes(n, word)) +
+  geom_col()
+```
+
+Sentiment analysis is one of the methods typically used to explore a text.
+
+Tidytext includes three general purpose sentiment lexicons:
+AFINN: score from -5 (negative) to 5 (positive) sentiment
+bing: positive or negative
+nrc: categories of positive, negative, anger, anticipation, disgust, fear, joy, sadess, surprise, and trust
+ 
+Note there are significant limitations due to lack of context.
+
+You will have to agree to cite the authors of nrc_sentiments to get the sentiments list.
+```{r get sentiments}
+library("textdata")
+nrc_sentiments <- get_sentiments("nrc")
+```
+
+We now want to add the sentiments to our existing dataframe. 
+"A left join keeps all observations in x, Figure 19.5. Every row of x is preserved in the output because it can fall back to matching a row of NAs in y" - R for Data Science
+```{r use left join to add sentiments to frankenstein_meaningful}
+frankenstein_sentiments <- left_join(x = frankenstein_meaningful, y = nrc_sentiments, by = "word")
+```
+
+We will graph the top ten words for each sentiment using facet wrap in ggplot.
+```{r graph sentiment analysis}
+frankenstein_sentiments |> 
+  group_by(sentiment) |> 
+  slice_max(n, n = 10) |> 
+  ungroup() |> 
+  mutate(word = reorder(word, n)) |> 
+           ggplot(aes(n, word, fill = sentiment)) +
+           geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y")
+```
+
