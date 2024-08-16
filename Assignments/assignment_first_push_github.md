@@ -13,8 +13,8 @@ Elizabeth Stregger
 
 ### Reminder
 
-We went over this process in class. Instructions are provided here in
-case as a reminder.
+We went over this process in class. Instructions in this section are a
+reminder in case you missed a step.
 
 Join the MtADATA3101 GitHub Organization. An email invitation was sent
 to the email address you used to set up your GitHub account. Remember to
