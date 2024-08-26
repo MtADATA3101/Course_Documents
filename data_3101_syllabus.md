@@ -96,7 +96,7 @@ Chapter 2: Workflow
 
 #### **Assignment 1:**
 
-First push to GitHub (due Sep. 12)
+- First push to GitHub (due Sep. 12)
 
 ## Week 3 (Sep. 17 & 19)
 
@@ -128,6 +128,10 @@ First push to GitHub (due Sep. 12)
 
 - Retraction Watch assignment (due Sep. 26)
 
+#### Assignment 4:
+
+- Update code from DPLYR live-coding, using styler (due Sep. 26)
+
 ## Week 5 (Oct. 1 & 3)
 
 #### Topics:
@@ -140,11 +144,10 @@ First push to GitHub (due Sep. 12)
 
 - Chapter 5
 
-#### Assignment 4 (due Oct. 3):
+#### Assignment 5:
 
-- Deposit code from live-coding
-
-- Use Styler package to update code submitted in Assignment 2
+- Deposit code from Data Tidying in R live-coding sessions (due Oct.
+  3)  
 
 ## Week 6 (Oct. 8 & 10)
 
@@ -152,11 +155,15 @@ First push to GitHub (due Sep. 12)
 
 - Documentation & reproducibility workshop
 
-- Data acquisition (import, webscraping)
+- Data Acquisition in R (import, webscraping)
 
-#### Reading:
+#### Reading / Talk:
 
 - Guest lecture (outside of class time) - CEWIL
+
+#### Assignment 6:
+
+- Deposit code from Data Acquisition in R (due Oct. 10)
 
 ## Week 7 (Oct. 22 & 24)
 
@@ -164,7 +171,7 @@ First push to GitHub (due Sep. 12)
 
 - Ungrading meetings
 
-#### Reading:
+#### Reading / Talk:
 
 - CEWIL / OA Week guest lecture (outside of class time)
 
@@ -184,17 +191,25 @@ First push to GitHub (due Sep. 12)
 
 - CEWIL: Webscraping in R
 
+#### Assignment 7:
+
+- Metadata files (due Nov. 7)
+
 ## Week 10 (Nov. 12 & 14)
 
-Reading Week
+Reading Week - no class
 
 ## Week 11 (Nov. 19 & Nov. 22)
 
-### Topics:
+#### Topics:
 
-### Assignment:
+- CEWIL project wrap-up
 
-- 
+- Research Data Management: Part 2
+
+#### Assignment 8:
+
+- Working with AI and R Reflection (due Nov. 22)
 
 ## Week 12 (Nov. 26 & 28)
 
